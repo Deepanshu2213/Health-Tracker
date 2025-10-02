@@ -1,16 +1,51 @@
-import { useState } from 'react'
+import { lazy, Suspense } from 'react';
+const LazyLogin = lazy(() => import('./pages/Login'));
+import { useSelector } from 'react-redux';
+import type { RootState } from '../src/store';
+import { createBrowserRouter, RouterProvider } from 'react-router-dom';
+import { MainPanel } from './components/MainPanel';
+import HomePage from './pages/Home';
+import './App.css';
+import { AddWorkout } from './pages/AddWorkout';
+import { Exercise } from './pages/Exercise';
 
-import './App.css'
-
+const router = createBrowserRouter([
+  {
+    path: '/',
+    element: <MainPanel />,
+    children: [
+      {
+        index: true,
+        element: <HomePage />,
+      },
+      {
+        path: 'addWorkout',
+        element: <AddWorkout />,
+      },
+      {
+        path: 'exercise',
+        element: <Exercise />,
+      },
+    ],
+  },
+]);
 function App() {
-  const [count, setCount] = useState<number>(0)
-
+  const { loading, error, data } = useSelector((state: RootState) => {
+    return state.login;
+  });
+  if (loading) {
+    return <>Work in progress</>;
+  }
+  if (data) {
+    return <RouterProvider router={router} />;
+  }
   return (
-    <div className='flex flex-col justify-center items-center'>
-    <h1>{count}</h1>
-    <button className="border-b" onClick={() => {setCount(prev => prev+1)}}>Test</button>
+    <div>
+      <Suspense fallback={<div>Loading...</div>}>
+        <LazyLogin />
+      </Suspense>
     </div>
-  )
+  );
 }
 
-export default App
+export default App;

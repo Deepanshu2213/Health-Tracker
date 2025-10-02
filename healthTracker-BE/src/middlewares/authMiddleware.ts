@@ -1,14 +1,15 @@
 import jwt from 'jsonwebtoken';
-import { User } from '../models/User.js';
 import type { Request, Response, NextFunction } from 'express';
-import { error } from 'console';
+import { User } from '../User/models/User.js';
+import { generateGenericError } from '../utils/loginUtil.js';
+import type { ErrorObj } from '../interface/ErrorObj.js';
 export const checkAuth = async (
   req: Request,
   res: Response,
   next: NextFunction
 ) => {
   interface tokenPayload {
-    _id?: string;
+    id?: string;
     email?: string;
   }
   try {
@@ -30,17 +31,19 @@ export const checkAuth = async (
         }
       );
     });
-    if (user && user._id) {
-      const orignalUser = User.findOne({ _id: user._id });
+    if (user && user.id) {
+      const orignalUser = await User.findOne({ where: { id: user.id } });
       if (!orignalUser) {
         throw Error('Please provide correct token or login again');
       } else {
+        (req as Request & { user: User }).user = orignalUser;
         next();
       }
     } else {
       throw Error('Please login to Continue');
     }
   } catch (err) {
-    next(err);
+    const errorObj: ErrorObj = generateGenericError(err, 400);
+    next(errorObj);
   }
 };

@@ -1,0 +1,40 @@
+.btn-default {
+  background-color: black;
+  border: black 2px solid;
+  padding: 1vw;
+  color: whitesmoke;
+}
+
+input{
+  /* border: black 2px solid; */
+  height: 3rem;
+  /* padding: 1.3rem; */
+  border-radius: 0.4rem;
+}
+label{
+  margin: 0.3rem;
+}
+input :focus {
+  border: 2px solid black;
+  border-radius: 1rem;
+}
+
+.tooltip_cmp:hover .tooltip{
+  visibility:visible;
+  position: fixed;
+  opacity: 1;
+}
+.tooltip{
+  visibility: hidden;
+  position: absolute;
+  z-index: 200;
+  color: white;
+  background-color: #171717; /* this is Tailwind's bg-gray-500 */
+  padding: 4px 8px;
+  border-radius: 4px;
+  white-space: nowrap;
+  margin: 1.7vh;
+  cursor: pointer;
+  opacity: 0;
+  transition: opacity 0.35s;
+}

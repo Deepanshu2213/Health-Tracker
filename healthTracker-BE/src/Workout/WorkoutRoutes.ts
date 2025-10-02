@@ -1,0 +1,16 @@
+import { Router } from 'express';
+import { workoutController } from './index.js';
+import { graphqlHTTP } from 'express-graphql';
+import { graphqlSchema } from './graphql/workoutQuery.js';
+export const WorkoutRoutes = Router();
+
+WorkoutRoutes.get('/', workoutController.getAllNested);
+WorkoutRoutes.post('/save', workoutController.saveEntity);
+
+WorkoutRoutes.use(
+  '/graphql',
+  graphqlHTTP((req, res) => ({
+    schema: graphqlSchema,
+    graphiql: true,
+  }))
+);

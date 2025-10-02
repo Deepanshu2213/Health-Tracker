@@ -1,8 +1,14 @@
 import type { IUser } from '../models/User.js';
 import { User } from '../models/User.js';
 import type { Request, Response, NextFunction } from 'express';
-import { createToken, setCookie, setResponse } from '../utils/loginUtil.js';
-
+import {
+  createToken,
+  generateGenericError,
+  setCookie,
+  setResponse,
+} from '../../utils/loginUtil.js';
+import { type UserRequest } from '../../interface/UserRequest.js';
+import type { ErrorObj } from '../../interface/ErrorObj.js';
 export const login = async (
   req: Request<{}, {}, IUser>,
   res: Response,
@@ -16,7 +22,8 @@ export const login = async (
     setCookie(res, 'authToken', token);
     setResponse([dbModel], 200, res);
   } catch (err) {
-    next(err);
+    const errorObj: ErrorObj = generateGenericError(err, 400);
+    next(errorObj);
   }
 };
 export const saveUser = async (
@@ -31,6 +38,15 @@ export const saveUser = async (
   try {
     await user.save();
   } catch (err) {
-    next(err);
+    const errorObj: ErrorObj = generateGenericError(err, 400);
+    next(errorObj);
   }
+};
+
+export const checkToken = (req: Request, res: Response, next: NextFunction) => {
+  const user = (req as Request & { user: IUser }).user;
+  if (!user) {
+    throw Error('Please login');
+  }
+  setResponse([user], 200, res);
 };
