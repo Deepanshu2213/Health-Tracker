@@ -2,6 +2,7 @@ import { useEffect, useRef, useState, type FC, type ReactElement } from 'react';
 import wrappedComponent from '../utils/wrappedComponent';
 import { useGetWorkoutQuery } from '../store';
 import type { Workout } from '../interface/Workout_Interfaces';
+import { ErrorHandler } from './ErrorHandle';
 interface size {
   height: number | undefined;
   width: number | undefined;
@@ -14,8 +15,9 @@ type activityType = 'TableBased' | 'ActivityBased';
 
 interface ActivityTrackerProps {
   type: activityType;
+  error?: boolean;
 }
-const ActivityTrackerMain: FC<ActivityTrackerProps> = ({ type }) => {
+const ActivityTrackerMain: FC<ActivityTrackerProps> = ({ type, error }) => {
   const [size, setSize] = useState<size>({
     height: undefined,
     width: undefined,
@@ -77,10 +79,6 @@ const ActivityTrackerMain: FC<ActivityTrackerProps> = ({ type }) => {
   ) => {
     return Array.from({ length: columns }).map((_, id) => {
       const workoutsPerformed = dateMapper[date.getTime()];
-      console.log(
-        'no of workout on date ' + date.toDateString() + '::',
-        workoutsPerformed
-      );
       const jsx = (
         <td
           key={id}
@@ -88,9 +86,11 @@ const ActivityTrackerMain: FC<ActivityTrackerProps> = ({ type }) => {
             workoutsPerformed?.length > 0 ? 'bg-green-600' : 'bg-neutral-800'
           } rounded-sm w-[2vh] relative tooltip_cmp`}
         >
-          <span className="tooltip text-wrap">{`On ${date.toDateString()} performed ${
+          <span className="tooltip text-wrap">{`On ${date.toDateString()}  ${
             workoutsPerformed?.length
-          } workouts`}</span>
+              ? `performed ${workoutsPerformed?.length} workouts`
+              : 'not performed'
+          }`}</span>
         </td>
       );
       date.setDate(date.getDate() + row);
@@ -140,6 +140,15 @@ const ActivityTrackerMain: FC<ActivityTrackerProps> = ({ type }) => {
       records[workout.createdAt || ''] = [workout];
     }
   });
+  if (isError || error) {
+    return (
+      <div ref={trackContainer} className="h-[22vh] p-2">
+        <div className="flex gap-2 w-full h-full overflow-x-auto overflow-y-hidden text-center justify-center items-center">
+          <ErrorHandler />
+        </div>
+      </div>
+    );
+  }
   return (
     <div ref={trackContainer} className="h-[22vh] p-2">
       <div className="flex gap-2 w-full h-full overflow-x-auto overflow-y-hidden">

@@ -1,8 +1,8 @@
-import type { Includeable, Model } from 'sequelize';
+import type { FindOptions, Includeable, Model } from 'sequelize';
 
 export interface BaseRepositoryInterface<T extends Model> {
   findById(id: string): Promise<T | null>;
-  findAll(): Promise<T[]>;
+  findAll(criteria?: FindOptions): Promise<T[]>;
   saveEntity(entity: T): Promise<T>;
   saveAllEntitty(entityList: T[]): Promise<T[]>;
   deleteByEntity(entity: T): Promise<T>;

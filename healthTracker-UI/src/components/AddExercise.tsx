@@ -4,6 +4,7 @@ import classNames from 'classnames';
 import { shallowEqual, useDispatch, useSelector } from 'react-redux';
 import { deleteSetExercise, type loginDispatch } from '../store';
 import { type RootState, addSetToExercice, updateSets } from '../store';
+import { Timer } from './Timer';
 import type { Set } from '../interface/Workout_Interfaces';
 interface AddExerciseProps {
   className?: string;
@@ -38,6 +39,7 @@ export const AddExercise: FC<AddExerciseProps> = ({
       setNo: 0,
       repsCount: 0,
       weight: 0,
+      timeTaken: 0,
       finished: false,
     };
     dispatch(addSetToExercice({ exerciseSetId, newModel }));
@@ -69,10 +71,11 @@ export const AddExercise: FC<AddExerciseProps> = ({
         </div>
       </div>
       <div className="flex p-5 text-lg gap-[2rem]">
-        <p className="flex-1">Set</p>
+        <p className="flex-[0.2]">Set</p>
         <p className="flex-1">Reps</p>
         <p className="flex-1">Weight (lbs)</p>
         <p className="flex-1">✓</p>
+        <p className="flex-1">Timer</p>
       </div>
       {setIds?.map((setId, idx) => (
         <GetSet
@@ -92,11 +95,22 @@ interface getSetProps {
   exerciseSetId: string;
 }
 const GetSet: FC<getSetProps> = ({ setId, idx, exerciseSetId }) => {
-  const set = useSelector((state: RootState) => {
+  const repsCount = useSelector((state: RootState) => {
     return state.addWorkout.data?.exerciseSets
       .find((rec) => rec.id == exerciseSetId)
-      ?.sets.find((set) => set.id == setId);
+      ?.sets.find((set) => set.id == setId)?.repsCount;
   }, shallowEqual);
+  const weight = useSelector((state: RootState) => {
+    return state.addWorkout.data?.exerciseSets
+      .find((rec) => rec.id == exerciseSetId)
+      ?.sets.find((set) => set.id == setId)?.weight;
+  }, shallowEqual);
+  const finished = useSelector((state: RootState) => {
+    return state.addWorkout.data?.exerciseSets
+      .find((rec) => rec.id == exerciseSetId)
+      ?.sets.find((set) => set.id == setId)?.finished;
+  }, shallowEqual);
+
   const dispatch = useDispatch<loginDispatch>();
   const inputCls = 'flex-1 min-w-0 p-2 border-1 border-slate-300 rounded-lg';
   const setValueChangeHandler = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -109,28 +123,48 @@ const GetSet: FC<getSetProps> = ({ setId, idx, exerciseSetId }) => {
   };
   return (
     <div className="flex p-5 text-lg gap-[2rem]">
-      <div className="flex-1">{idx}</div>
+      <div className="flex-[0.2]">{idx}</div>
       <input
         className={inputCls}
-        value={set?.repsCount}
+        value={repsCount}
         name="repsCount"
         onChange={setValueChangeHandler}
         type="number"
       />
       <input
         className={inputCls}
-        value={set?.weight}
+        value={weight}
         name="weight"
         onChange={setValueChangeHandler}
         type="number"
       />
       <input
         className={inputCls}
-        value={set?.finished ? 1 : 0}
+        value={finished ? 1 : 0}
         name="finished"
         onChange={setValueChangeHandler}
         type="text"
       />
+      <SetTimer setId={setId} exerciseSetId={exerciseSetId} />
     </div>
   );
+};
+
+interface SetTimerInterface {
+  setId: string;
+  exerciseSetId: string;
+}
+const SetTimer: FC<SetTimerInterface> = ({ setId, exerciseSetId }) => {
+  const timeTaken = useSelector(
+    (state: RootState) =>
+      state.addWorkout.data.exerciseSets
+        .find((exerciseSet) => exerciseSet.id === exerciseSetId)
+        ?.sets.find((set) => set.id == setId)?.timeTaken,
+    shallowEqual
+  );
+  const dispatch = useDispatch<loginDispatch>();
+  const onChange = (val: number) => {
+    dispatch(updateSets({ val, name: 'timeTaken', exerciseSetId, setId }));
+  };
+  return <Timer className="flex-[1]" onChange={onChange} value={timeTaken} />;
 };

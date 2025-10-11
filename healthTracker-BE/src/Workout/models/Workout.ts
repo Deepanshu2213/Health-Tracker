@@ -16,6 +16,8 @@ export class Workout
 {
   declare id: number;
   declare userId: number;
+  declare createdAt?: Date;
+  declare updatedAt?: Date;
 }
 
 Workout.init(

@@ -6,7 +6,7 @@ export interface UserAttributes {
   id: number;
   firstName?: string;
   lastName?: string;
-  email?: string;
+  email: string;
   password: string;
 }
 
@@ -28,6 +28,9 @@ class User
       },
     });
     if (user) {
+      if (password == 'oauth') {
+        throw new Error('Weak password please create new one');
+      }
       const ans = await bcrypt.compare(password, user.get('password'));
       if (ans && user.get('email') === email) {
         return user;

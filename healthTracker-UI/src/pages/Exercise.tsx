@@ -14,9 +14,9 @@ export interface exerciseMap {
 }
 
 interface ExerciseMainProps {
-  useInPopup: boolean;
+  useInPopup?: boolean;
   setOpen?: React.Dispatch<React.SetStateAction<boolean>>;
-  addNewModel: (exerciseId: number, name: string) => void;
+  addNewModel?: (exerciseId: number, name: string) => void;
 }
 
 const ExerciseMain: FC<ExerciseMainProps> = ({
@@ -48,7 +48,7 @@ const ExerciseMain: FC<ExerciseMainProps> = ({
   const addExercise = () => {
     const exercises = getKeys(selectedExercise);
     exercises.forEach((exercisId) => {
-      addNewModel(
+      addNewModel?.(
         parseInt(exercisId as string),
         selectedExercise[exercisId].name
       );

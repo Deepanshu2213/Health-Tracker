@@ -12,5 +12,6 @@ WorkoutRoutes.use(
   graphqlHTTP((req, res) => ({
     schema: graphqlSchema,
     graphiql: true,
+    context: { req, res },
   }))
 );

@@ -44,7 +44,7 @@ export const addWorkoutSlice = createSlice({
     updateSets: (
       state,
       action: PayloadAction<{
-        val: string;
+        val: string | number;
         name: string;
         exerciseSetId: string;
         setId: string;

@@ -1,4 +1,10 @@
-import { Op, type Includeable, type Model, type ModelStatic } from 'sequelize';
+import {
+  Op,
+  type FindOptions,
+  type Includeable,
+  type Model,
+  type ModelStatic,
+} from 'sequelize';
 import { type BaseRepositoryInterface } from '../interface/baseRepository.js';
 
 class BaseRepository<T extends Model> implements BaseRepositoryInterface<T> {
@@ -35,8 +41,8 @@ class BaseRepository<T extends Model> implements BaseRepositoryInterface<T> {
     await Promise.all(promises);
     return entityList;
   };
-  findAll = async (): Promise<T[]> => {
-    const records = await this.entity.findAll();
+  findAll = async (criteria?: FindOptions): Promise<T[]> => {
+    const records = await this.entity.findAll(criteria);
     return records;
   };
   findAllNested = async (): Promise<T[]> => {

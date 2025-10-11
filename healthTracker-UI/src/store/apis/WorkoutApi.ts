@@ -1,5 +1,9 @@
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
-import type { Workout, newWorkOut } from '../../interface/Workout_Interfaces';
+import type {
+  Workout,
+  WrokoutStatsView,
+  newWorkOut,
+} from '../../interface/Workout_Interfaces';
 interface graphQlResponseData<T> {
   [method: string]: T[];
 }
@@ -57,10 +61,31 @@ export const WorkoutApi = createApi({
                     getWorkout(startDate: $startDate, endDate: $endDate) {
                     id
                     createdAt
-                    updatedAt
                   }
                 }`,
               variables: { startDate, endDate },
+            },
+          };
+        },
+      }),
+      getWorkoutStats: builder.query<graphQlResponse<WrokoutStatsView>, void>({
+        providesTags: () => {
+          return [{ type: 'Workout' }];
+        },
+        query: () => {
+          return {
+            method: 'POST',
+            url: '/graphql',
+            body: {
+              query: `query {
+                getStats{
+                 userId
+                 total_workouts
+                 this_month
+                 current_streak
+                 max_streaks
+                 }
+                }`,
             },
           };
         },
@@ -69,4 +94,8 @@ export const WorkoutApi = createApi({
   },
 });
 
-export const { useSaveWorkoutMutation, useGetWorkoutQuery } = WorkoutApi;
+export const {
+  useSaveWorkoutMutation,
+  useGetWorkoutQuery,
+  useGetWorkoutStatsQuery,
+} = WorkoutApi;

@@ -5,6 +5,7 @@ import { userController } from '../index.js';
 
 Router.post('/login', userController.login);
 Router.post('/save', userController.saveEntity);
+Router.get('/oauth', userController.oauth);
 //Router.get('/checkToken', checkToken);
 
 export default Router;

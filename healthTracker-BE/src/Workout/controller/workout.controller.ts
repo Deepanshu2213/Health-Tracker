@@ -2,6 +2,12 @@ import type { ModelStatic } from 'sequelize';
 import { BaseController } from '../../base/controller/BaseController.js';
 import type { BaseServiceInterface } from '../../base/interface/BaseServiceInterface.js';
 import type { Workout } from '../models/Workout.js';
+import type { Request, Response, NextFunction } from 'express';
+import {
+  generateGenericError,
+  setGenericResponse,
+} from '../../utils/loginUtil.js';
+import type { ErrorObj } from '../../interface/ErrorObj.js';
 
 export class WorkoutController extends BaseController<Workout> {
   constructor(
@@ -10,4 +16,19 @@ export class WorkoutController extends BaseController<Workout> {
   ) {
     super(service, model);
   }
+  saveEntity = async (
+    req: Request,
+    res: Response,
+    next: NextFunction
+  ): Promise<void> => {
+    try {
+      const body: Workout = req.body;
+      body.userId = (req as any).user.id;
+      const workout = await this.service.saveEntity(body);
+      setGenericResponse([workout], 200, res);
+    } catch (err) {
+      const errorObj: ErrorObj = generateGenericError(err, 400);
+      next(errorObj);
+    }
+  };
 }

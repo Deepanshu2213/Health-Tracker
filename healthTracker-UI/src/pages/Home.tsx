@@ -6,40 +6,25 @@ import { type StatsPaneProps } from '../components/StatsPanel';
 import { RecentWorkoutPanel } from '../components/RecentWorkoutPanel';
 import { ActivityTracker } from '../components/ActivityTracker';
 import { useNavigate } from 'react-router-dom';
-const bannetListConfig: StatsPaneProps[] = [
-  {
-    heading: 'Total Workouts',
-    value: '10',
-    icon: <Dumbbell />,
-    className: '',
-  },
-  {
-    heading: 'Current Streak',
-    value: '12 Days',
-    icon: <Flame />,
-    className: '',
-  },
-  {
-    heading: 'This Month',
-    value: '20 Times',
-    icon: <ChartColumn />,
-    className: '',
-  },
-  {
-    heading: 'Personal Best',
-    value: '245 lbs',
-    icon: <Trophy />,
-    className: '',
-  },
-];
-const namePanel = () => {
+import { useGetWorkoutStatsQuery, type RootState } from '../store';
+import { getGooleAuthUrl } from '../utils/utiltiy';
+import { useSelector } from 'react-redux';
+import { ErrorBoundary } from 'react-error-boundary';
+
+const NamePanel: FC = () => {
+  const user = useSelector((state: RootState) => {
+    return state.login.data?.data;
+  });
+  const loggedInUser = user?.[0];
   return (
     <div className="flex items-center gap-4 flex-1 m-[3rem]">
       <div className="w-16 h-16 bg-gradient-to-r from-purple-500 to-pink-500 rounded-full flex items-center justify-center text-2xl">
         💪
       </div>
       <div>
-        <h1 className="text-[2rem]">Deepanshu</h1>
+        <h1 className="text-[2rem]">{`${
+          loggedInUser ? loggedInUser.firstName : 'Na'
+        }`}</h1>
         <p className="text-[1rem]">Level 15 - Build Strength</p>
       </div>
     </div>
@@ -47,14 +32,46 @@ const namePanel = () => {
 };
 
 const Hi: FC = () => {
+  console.log(getGooleAuthUrl());
+  const { data, isLoading } = useGetWorkoutStatsQuery();
+  const analyticsData = data?.data['getStats'][0];
+  const bannetListConfig: StatsPaneProps[] = [
+    {
+      heading: 'Total Workouts (Year)',
+      value: analyticsData?.total_workouts || 10,
+      icon: <Dumbbell />,
+      className: '',
+    },
+    {
+      heading: 'Current Streak (Year)',
+      value: `${analyticsData?.current_streak || 0} days`,
+      icon: <Flame />,
+      className: '',
+    },
+    {
+      heading: 'This Month (Year)',
+      value: `${analyticsData?.this_month || 0} Times`,
+      icon: <ChartColumn />,
+      className: '',
+    },
+    {
+      heading: 'Max Streak (Year)',
+      value: `${analyticsData?.max_streaks || 0} Times`,
+      icon: <Trophy />,
+      className: '',
+    },
+  ];
   const navigate = useNavigate();
   const startWorkout = () => {
     navigate('/addWorkout');
   };
+  if (isLoading) {
+    return 'Loading..';
+  }
   return (
     <div className="flex flex-col items-center justify-center gap-[1rem]">
       <div className="flex w-[80%]">
-        {namePanel()}
+        <NamePanel />
         <div className="flex-1 flex justify-end m-[4rem]">
           <button
             className="text-[1.5rem] bg-white/10 backdrop-blur-lg rounded-xl px-[1.2rem] border border-white/20 p-[0.6rem]"
@@ -65,14 +82,18 @@ const Hi: FC = () => {
         </div>
       </div>
       <div className="flex flex-col gap-[2rem] w-[74%] mb-[2rem]">
-        {bannerList()}
-        <ActivityTracker type={'TableBased'} />
+        {bannerList(bannetListConfig)}
+        <ErrorBoundary
+          fallback={<ActivityTracker type={'TableBased'} error={true} />}
+        >
+          <ActivityTracker type={'TableBased'} />
+        </ErrorBoundary>
         <RecentWorkoutPanel />
       </div>
     </div>
   );
 };
-const bannerList = () => {
+const bannerList = (bannetListConfig: StatsPaneProps[]) => {
   return bannetListConfig.map((el, id) => {
     return <Banners key={id} {...el} />;
   });

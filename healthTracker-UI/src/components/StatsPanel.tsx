@@ -3,7 +3,7 @@ import wrappedComponent from '../utils/wrappedComponent';
 import classNames from 'classnames';
 export interface StatsPaneProps {
   heading: string;
-  value: string;
+  value: number | string;
   icon: ReactNode;
   className: string;
   [key: string]: any;

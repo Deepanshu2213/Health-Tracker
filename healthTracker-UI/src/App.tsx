@@ -1,13 +1,32 @@
-import { lazy, Suspense } from 'react';
+import { lazy, Suspense, type FC } from 'react';
 const LazyLogin = lazy(() => import('./pages/Login'));
 import { useSelector } from 'react-redux';
 import type { RootState } from '../src/store';
 import { createBrowserRouter, RouterProvider } from 'react-router-dom';
 import { MainPanel } from './components/MainPanel';
-import HomePage from './pages/Home';
 import './App.css';
-import { AddWorkout } from './pages/AddWorkout';
-import { Exercise } from './pages/Exercise';
+import { ErrorBoundary } from 'react-error-boundary';
+import { ErrorHandler } from './components/ErrorHandle';
+type pages = 'HomePage' | 'AddWorkout' | 'Exercise';
+type pagesMapType = {
+  [K in pages]: FC;
+};
+const PageMap: pagesMapType = {
+  AddWorkout: lazy(() =>
+    import('./pages/AddWorkout').then((module) => ({
+      default: module.AddWorkout,
+    }))
+  ),
+  HomePage: lazy(() => import('./pages/Home')),
+  Exercise: lazy(() =>
+    import('./pages/Exercise').then((module) => ({
+      default: module.Exercise,
+    }))
+  ),
+};
+const HomePage = PageMap['HomePage'];
+const AddWorkout = PageMap['AddWorkout'];
+const Exercise = PageMap['Exercise'];
 
 const router = createBrowserRouter([
   {
@@ -16,15 +35,33 @@ const router = createBrowserRouter([
     children: [
       {
         index: true,
-        element: <HomePage />,
+        element: (
+          <ErrorBoundary fallback={<ErrorHandler screen={true} />}>
+            <Suspense fallback={<div>Loading Page ...</div>}>
+              <HomePage />
+            </Suspense>
+          </ErrorBoundary>
+        ),
       },
       {
         path: 'addWorkout',
-        element: <AddWorkout />,
+        element: (
+          <ErrorBoundary fallback={<ErrorHandler screen={true} />}>
+            <Suspense fallback={<div>Loading Page ...</div>}>
+              <AddWorkout />
+            </Suspense>
+          </ErrorBoundary>
+        ),
       },
       {
         path: 'exercise',
-        element: <Exercise />,
+        element: (
+          <ErrorBoundary fallback={<ErrorHandler screen={true} />}>
+            <Suspense fallback={<div>Loading Page ...</div>}>
+              <Exercise />
+            </Suspense>
+          </ErrorBoundary>
+        ),
       },
     ],
   },

@@ -1,4 +1,4 @@
-import type { Includeable, Model } from 'sequelize';
+import type { FindOptions, Includeable, Model } from 'sequelize';
 import type { BaseRepositoryInterface } from '../interface/baseRepository.js';
 import type { BaseServiceInterface } from '../interface/BaseServiceInterface.js';
 
@@ -12,8 +12,8 @@ export class BaseService<E extends Model> implements BaseServiceInterface<E> {
     const data = await this.repository.findById(id);
     return data;
   };
-  getAllEntity = async (): Promise<E[]> => {
-    const data = await this.repository.findAll();
+  getAllEntity = async (criteria?: FindOptions): Promise<E[]> => {
+    const data = await this.repository.findAll(criteria);
     return data;
   };
   saveEntity = async (entity: E): Promise<E> => {

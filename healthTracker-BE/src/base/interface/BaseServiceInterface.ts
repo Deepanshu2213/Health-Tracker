@@ -1,7 +1,7 @@
-import type { Includeable } from 'sequelize';
+import type { FindOptions, Includeable } from 'sequelize';
 
 export interface BaseServiceInterface<E> {
-  getAllEntity(): Promise<E[]>;
+  getAllEntity(criteria?: FindOptions): Promise<E[]>;
   saveEntity(entity: E): Promise<E>;
   getEntityById(id: string): Promise<E | null>;
   saveAllEntity(entityList: E[]): Promise<E[]>;

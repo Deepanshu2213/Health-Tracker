@@ -8,6 +8,7 @@ import { loginUser } from '../store';
 import type { LoginArgs } from '../store';
 import type { loginDispatch } from '../store';
 import { createUser } from '../store';
+import { getGooleAuthUrl } from '../utils/utiltiy';
 
 const iconsList = (): ReactNode[] => {
   return [
@@ -18,7 +19,7 @@ const iconsList = (): ReactNode[] => {
 };
 const Login: FC = () => {
   return (
-    <div className="flex h-[100vh] w-[100vw] overflow-y-auto">
+    <div className="flex min-h-screen min-w-screen overflow-y-auto">
       <LeftPanel />
       <RightPanel />
     </div>
@@ -26,11 +27,11 @@ const Login: FC = () => {
 };
 
 const LeftPanel: FC = () => {
-  return <div className="flex-1"></div>;
+  return <div className="flex-1 h-full"></div>;
 };
 const RightPanel: FC = () => {
   return (
-    <div className="flex-1 flex flex-col justify-center items-center bg-gray-100 text-gray-700 font-medium">
+    <div className="flex-1 h-full flex flex-col justify-center items-center bg-gray-100 text-gray-700 font-medium">
       <div className="w-full h-full content-center">
         <AuthLoginCont />
       </div>
@@ -66,7 +67,7 @@ const AuthLoginCont: FC = () => {
           login ? 'Login' : 'Create '
         } an account`}</h1>
         <button className="w-full rounded-md flex items-center justify-center gap-3 border-3 p-[1rem] border-gray-300">
-          {`${login ? 'Login' : 'Create '}  account with google`}
+          {<a href={getGooleAuthUrl()}>Login account with google</a>}
           <FaGoogle />
         </button>
       </div>
@@ -90,7 +91,7 @@ const AuthLoginCont: FC = () => {
             name="email"
             required
             placeholder="Enter your email"
-            className="border-3 border-gray-300"
+            className="p-2 border-3 border-gray-300"
           />
         </div>
         <div className={inputCls + `${login ? ' hidden' : ''}`}>
@@ -102,7 +103,7 @@ const AuthLoginCont: FC = () => {
             name="name"
             required={!login}
             placeholder="Enter your Name"
-            className="border-3 border-gray-300"
+            className="p-2 border-3 border-gray-300"
           />
         </div>
         <div className={inputCls}>
@@ -113,7 +114,7 @@ const AuthLoginCont: FC = () => {
             required
             id="password"
             ref={password}
-            className={`border-3 border-gray-300`}
+            className={`p-2 border-3 border-gray-300`}
             placeholder="Enter your Password"
           />
         </div>

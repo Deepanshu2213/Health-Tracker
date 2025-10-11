@@ -3,7 +3,6 @@ import express from 'express';
 // import UserRoutes from './old/routes/login.js';
 import bodyParser from 'body-parser';
 import cookieParser from 'cookie-parser';
-import { Workout } from './Workout/models/Workout.js';
 import { checkAuth } from './middlewares/authMiddleware.js';
 import loginProtectedRoutes from './old/routes/loginProtected.js';
 import userRoutes from './User/routes/UserRoutes.js';
@@ -26,12 +25,12 @@ try {
 
   //app.use('/user', UserRoutes);
   app.use('/user', userRoutes);
-  app.use('/workout', WorkoutRoutes);
   app.use(checkAuth);
   app.use('/exercise', exerciseRoutes);
   app.use('/user', loginProtectedRoutes);
   app.use('/exerciseSet', exerciseSetRoutes);
   app.use('/set', setRoutes);
+  app.use('/workout', WorkoutRoutes);
   app.listen(8080, () => {
     console.log('Hi server started');
   });

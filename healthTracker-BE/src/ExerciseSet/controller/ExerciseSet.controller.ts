@@ -3,7 +3,7 @@ import { BaseController } from '../../base/controller/BaseController.js';
 import type { ExerciseSet } from '../models/ExerciseSet.js';
 import { type ExerciseSetServiceInterface } from '../interface/ExerciseSetService.interface.js';
 import type { Request, Response, NextFunction } from 'express';
-import {} from '../../utils/loginUtil.js';
+import { setGenericResponse } from '../../utils/loginUtil.js';
 
 export class ExerciseSetController extends BaseController<ExerciseSet> {
   constructor(
@@ -22,6 +22,6 @@ export class ExerciseSetController extends BaseController<ExerciseSet> {
         association: 'sets',
       },
     ]);
-    data, 200, res;
+    setGenericResponse<ExerciseSet>(data, 200, res);
   };
 }

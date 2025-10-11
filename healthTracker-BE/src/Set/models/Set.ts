@@ -9,6 +9,7 @@ interface SetAttribute {
   finished: boolean;
   id: number;
   exerciseSetId: number;
+  timeTaken?: number;
 }
 
 interface SetCreationAttribute extends Optional<SetAttribute, 'id'> {}
@@ -20,6 +21,7 @@ export class Set extends Model<SetAttribute, SetCreationAttribute> {
   declare finished: boolean;
   declare id: number;
   declare exerciseSetId: number;
+  declare timeTaken?: number;
 }
 
 Set.init(
@@ -49,6 +51,9 @@ Set.init(
       type: DataTypes.INTEGER,
       allowNull: false,
       references: { model: 'ExerciseSets', key: 'id' },
+    },
+    timeTaken: {
+      type: DataTypes.INTEGER,
     },
   },
   { sequelize, modelName: 'Sets', freezeTableName: true }
