@@ -31,6 +31,20 @@ export class BaseController<E extends Model> {
       next(errorObj);
     }
   };
+  getEntityByIdNested = async (
+    req: Request,
+    res: Response,
+    next: NextFunction
+  ) => {
+    try {
+      const id = req.params.id;
+      const data = await this.service.getNestedEntityById(id as string);
+      setGenericResponse(data ? [data] : [], 200, res);
+    } catch (err) {
+      const errorObj: ErrorObj = generateGenericError(err, 400);
+      next(errorObj);
+    }
+  };
   saveEntity = async (req: Request, res: Response, next: NextFunction) => {
     try {
       let entityObj: E = req.body;

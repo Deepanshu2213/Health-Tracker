@@ -2,6 +2,7 @@ import type { FindOptions, Includeable, Model } from 'sequelize';
 
 export interface BaseRepositoryInterface<T extends Model> {
   findById(id: string): Promise<T | null>;
+  findNestedById(id: string): Promise<T | null>;
   findAll(criteria?: FindOptions): Promise<T[]>;
   saveEntity(entity: T): Promise<T>;
   saveAllEntitty(entityList: T[]): Promise<T[]>;

@@ -22,7 +22,7 @@ export const StatsPanelMain: FC<StatsPaneProps> = ({
         <h1>{heading}</h1>
         <p>{value}</p>
       </div>
-      <div className="flex-1 flex justify-end">{icon}</div>
+      <div className="flex-1 flex justify-end text-purple-400">{icon}</div>
     </div>
   );
 };

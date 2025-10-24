@@ -8,6 +8,10 @@ export class BaseService<E extends Model> implements BaseServiceInterface<E> {
     const data = await this.repository.findAllNested();
     return data;
   };
+  getNestedEntityById = async (id: string): Promise<E | null> => {
+    const data = await this.repository.findNestedById(id);
+    return data;
+  };
   getEntityById = async (id: string): Promise<E | null> => {
     const data = await this.repository.findById(id);
     return data;

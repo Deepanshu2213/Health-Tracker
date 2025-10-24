@@ -1,41 +1,62 @@
-import { type FC } from 'react';
+import { useEffect, type ChangeEvent, type FC } from 'react';
 import wrappedComponent from '../utils/wrappedComponent';
 import { Save, Plus } from 'lucide-react';
 import { AddExercise } from '../components/AddExercise';
 import { shallowEqual, useDispatch, useSelector } from 'react-redux';
 import {
+  addNewSetsExercise,
   removeWorkout,
   store,
+  updateName,
   useSaveWorkoutMutation,
+  type loginDispatch,
   type RootState,
 } from '../store';
 import { addNewSetExercise } from '../store';
-import type { newWorkOut } from '../interface/Workout_Interfaces';
+import type { newWorkOut, Workout } from '../interface/Workout_Interfaces';
 import { BasePopup } from '../components/BasePopup';
 import { Exercise } from './Exercise';
 import { useModlaHooks } from '../hooks/useModalHook';
+import { useLocation } from 'react-router-dom';
 
 const AddWorkoutMain = () => {
-  // useEffect(() => {
-  //   dispatch(addNewWorkout({ name: 'shoulde press', id: '1', data: [] }));
-  // }, []);
-
+  const dispatch = useDispatch<loginDispatch>();
+  const location = useLocation();
+  const workout = location?.state?.workout as Workout | undefined;
+  let workoutCopy = JSON.parse(JSON.stringify(workout || '')) as Workout;
+  useEffect(() => {
+    if (workoutCopy) {
+      workoutCopy?.exerciseSets.forEach((exerciseSet) => {
+        exerciseSet.name = exerciseSet?.Exercise?.name || '';
+      });
+      dispatch(addNewSetsExercise(workoutCopy.exerciseSets));
+    }
+  }, []);
+  const nameChange = (e: ChangeEvent<HTMLInputElement>) => {
+    const name = e.target.value;
+    dispatch(updateName(name));
+  };
   const exerciseSets = useSelector((state: RootState) => {
     return state.addWorkout.data?.exerciseSets.map(
       (exerciseSet) => exerciseSet.id
     );
   }, shallowEqual);
+  const name = useSelector((state: RootState) => {
+    return state.addWorkout.data.name;
+  }, shallowEqual);
   return (
-    <div className="flex flex-col items-center">
-      <div className="flex flex-col w-[65%] p-[1rem] gap-[1rem]">
+    <div className="flex flex-col items-center py-[1rem]">
+      <div className="flex flex-col w-[65%] p-[1rem] gap-[1rem] home-resize">
         <Header />
         <input
           type="email"
           id="userEmail"
           name="email"
+          value={name}
+          onChange={nameChange}
           required
           placeholder="Enter Workout name ..."
-          className="border-1 border-slate-300 text-xl p-[1rem]"
+          className="border-3 border-neutral-700 text-xl p-[1rem]"
         />
         {exerciseSets?.map((id) => {
           return <AddExercise itemId={id} />;
@@ -91,14 +112,14 @@ const Header: FC = () => {
       <div className="flex-1 content-center text-2xl p-2">Start Workout</div>
       <div className="flex-1 justify-end flex gap-[1rem]">
         <button
-          className="bg-slate-600 flex p-3 rounded-lg gap-2 shadow-lg"
+          className="flex text-lg gap-2 rounded-xl px-3 border-2 border-white/20 items-center"
           onClick={addWorkout}
         >
           <Save />
           Add Exercise
         </button>
         <button
-          className="bg-slate-600 flex p-3 rounded-lg gap-2 shadow-lg"
+          className="flex text-lg gap-2 rounded-xl px-3 border-2 border-white/20 items-center"
           onClick={isLoading ? () => {} : saveWorkout}
         >
           <Plus />

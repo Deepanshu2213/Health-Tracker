@@ -6,16 +6,21 @@ export interface Set {
   finished: boolean;
   id: string;
 }
-
+interface Exercise {
+  name: string;
+  id: string;
+}
 export interface ExerciseSet {
   sets: Set[];
   name: string;
   exerciseId: number;
+  Exercise?: Exercise;
   id: string;
 }
 export interface Workout {
   exerciseSets: ExerciseSet[];
   userId: number;
+  name: string;
   id: number;
   createdAt?: string;
 }

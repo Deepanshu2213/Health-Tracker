@@ -3,6 +3,7 @@ import wrappedComponent from '../utils/wrappedComponent';
 import { useGetWorkoutQuery } from '../store';
 import type { Workout } from '../interface/Workout_Interfaces';
 import { ErrorHandler } from './ErrorHandle';
+import { Loader } from './Loader';
 interface size {
   height: number | undefined;
   width: number | undefined;
@@ -132,6 +133,9 @@ const ActivityTrackerMain: FC<ActivityTrackerProps> = ({ type, error }) => {
     startDate: startDate.toDateString(),
     endDate: endDate.toDateString(),
   });
+  if (isLoading) {
+    return <Loader screen={false} />;
+  }
   let records: dateMap = {};
   data?.data['getWorkout'].forEach((workout) => {
     if (records[workout.createdAt || '']) {

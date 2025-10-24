@@ -5,6 +5,12 @@
   color: whitesmoke;
 }
 
+button{
+  cursor: pointer;
+}
+
+
+
 input{
   /* border: black 2px solid; */
   height: 3rem;
@@ -38,4 +44,26 @@ input :focus {
   cursor: pointer;
   opacity: 0;
   transition: opacity 0.35s;
+}
+@media screen and (max-width: 500px){
+  .icon-space-not-available{
+    display: none;
+  }
+}
+
+@media screen and (max-width: 726px){
+  .home-resize{
+    width: 95%;
+  }
+  .heading{
+    margin: 0%;
+  }
+}
+@media screen and (max-width: 1025px){
+    .home-resize{
+    width: 90%;
+  }
+  .heading{
+    margin: 1rem;
+  }
 }

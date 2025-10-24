@@ -15,6 +15,7 @@ interface initailStateStore {
 const initialState: initailStateStore = {
   data: {
     exerciseSets: [],
+    name: '',
     userId: 1,
     id: 1,
   },
@@ -40,6 +41,11 @@ export const addWorkoutSlice = createSlice({
     addNewSetExercise: (state, action: PayloadAction<ExerciseSet>) => {
       state.data?.exerciseSets.push(action.payload);
     },
+    addNewSetsExercise: (state, action: PayloadAction<ExerciseSet[]>) => {
+      if (state.data) {
+        state.data.exerciseSets = action.payload;
+      }
+    },
     saveWorkout: (state) => {},
     updateSets: (
       state,
@@ -55,6 +61,10 @@ export const addWorkoutSlice = createSlice({
         .find((exerciseSet) => exerciseSet.id == exerciseSetId)
         ?.sets.find((set) => set.id == setId);
       set[name] = val;
+    },
+    updateName: (state, action: PayloadAction<string>) => {
+      const name = action.payload;
+      state.data.name = name;
     },
     deleteSetExercise: (
       state,
@@ -79,5 +89,7 @@ export const {
   updateSets,
   deleteSetExercise,
   removeWorkout,
+  addNewSetsExercise,
+  updateName,
 } = addWorkoutSlice.actions;
 export const addWorkoutReducer = addWorkoutSlice.reducer;

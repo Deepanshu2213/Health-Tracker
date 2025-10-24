@@ -22,7 +22,7 @@ export const AddExercise: FC<AddExerciseProps> = ({
     return state.addWorkout.data?.exerciseSets.find(
       (record) => record.id == itemId
     )?.name;
-  });
+  }, shallowEqual);
   const setIds = useSelector((state: RootState) => {
     return state.addWorkout.data?.exerciseSets
       .find((record) => record.id == itemId)
@@ -53,7 +53,7 @@ export const AddExercise: FC<AddExerciseProps> = ({
     GenerateFirstSet(itemId);
   };
   const cls = classNames(
-    'flex flex-col text-2xl w-full border-2 border-slate-600 rounded-lg',
+    'flex flex-col text-2xl w-full border-2 border-neutral-600 rounded-lg',
     className
   );
   return (
@@ -70,12 +70,12 @@ export const AddExercise: FC<AddExerciseProps> = ({
           <Trash2 onClick={deleteThisWorkOut} />
         </div>
       </div>
-      <div className="flex p-5 text-lg gap-[2rem]">
+      <div className="flex px-5 py-3 text-lg gap-[2.2vw]">
         <p className="flex-[0.2]">Set</p>
         <p className="flex-1">Reps</p>
-        <p className="flex-1">Weight (lbs)</p>
-        <p className="flex-1">✓</p>
-        <p className="flex-1">Timer</p>
+        <p className="flex-1 ml-3">Weight (lbs)</p>
+        <p className="flex-1 ml-5">✓</p>
+        <p className="flex-1 ml-4">Timer</p>
       </div>
       {setIds?.map((setId, idx) => (
         <GetSet
@@ -112,7 +112,7 @@ const GetSet: FC<getSetProps> = ({ setId, idx, exerciseSetId }) => {
   }, shallowEqual);
 
   const dispatch = useDispatch<loginDispatch>();
-  const inputCls = 'flex-1 min-w-0 p-2 border-1 border-slate-300 rounded-lg';
+  const inputCls = 'flex-1 min-w-0 p-2 border-1 border-neutral-500 rounded-lg';
   const setValueChangeHandler = (e: React.ChangeEvent<HTMLInputElement>) => {
     let val: any = e.currentTarget.value;
     const name = e.currentTarget.name;
@@ -123,7 +123,7 @@ const GetSet: FC<getSetProps> = ({ setId, idx, exerciseSetId }) => {
   };
   return (
     <div className="flex p-5 text-lg gap-[2rem]">
-      <div className="flex-[0.2]">{idx}</div>
+      <div className="flex-[0.2] content-center">{idx}</div>
       <input
         className={inputCls}
         value={repsCount}

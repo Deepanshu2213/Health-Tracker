@@ -52,6 +52,12 @@ class BaseRepository<T extends Model> implements BaseRepositoryInterface<T> {
     const record = this.entity.findByPk(id);
     return record;
   };
+  findNestedById = async (id: string): Promise<T | null> => {
+    const record = this.entity.findByPk(id, {
+      include: { all: true, nested: true },
+    });
+    return record;
+  };
   saveEntity = async (entity: T['_creationAttributes']): Promise<T> => {
     const dbEntity = await this.entity.create(entity, {
       include: { all: true, nested: true },

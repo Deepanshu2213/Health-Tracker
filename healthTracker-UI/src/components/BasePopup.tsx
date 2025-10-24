@@ -31,7 +31,7 @@ export const BasePopup: FC<BasePopupProps> = ({ children, setOpen }) => {
           e.stopPropagation();
         }}
       >
-        <div>
+        <div className="icon-space-not-available">
           <X className="mx-4 my-3" onClick={() => setOpen(false)} />
         </div>
         {children}

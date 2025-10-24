@@ -4,6 +4,7 @@ import type {
   WrokoutStatsView,
   newWorkOut,
 } from '../../interface/Workout_Interfaces';
+import { type ResponseObj } from '../interfaces/ResponseInterface';
 interface graphQlResponseData<T> {
   [method: string]: T[];
 }
@@ -90,6 +91,17 @@ export const WorkoutApi = createApi({
           };
         },
       }),
+      getAllWorkOut: builder.query<ResponseObj<Workout>, { day?: number }>({
+        providesTags: () => {
+          return [{ type: 'Workout' }];
+        },
+        query: ({ day }) => {
+          return {
+            method: 'GET',
+            url: `/current${day || day == 0 ? `?day=${day}` : ''}`,
+          };
+        },
+      }),
     };
   },
 });
@@ -98,4 +110,5 @@ export const {
   useSaveWorkoutMutation,
   useGetWorkoutQuery,
   useGetWorkoutStatsQuery,
+  useGetAllWorkOutQuery,
 } = WorkoutApi;

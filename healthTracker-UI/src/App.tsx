@@ -7,7 +7,8 @@ import { MainPanel } from './components/MainPanel';
 import './App.css';
 import { ErrorBoundary } from 'react-error-boundary';
 import { ErrorHandler } from './components/ErrorHandle';
-type pages = 'HomePage' | 'AddWorkout' | 'Exercise';
+import { Loader } from './components/Loader';
+type pages = 'HomePage' | 'AddWorkout' | 'Exercise' | 'UserStats';
 type pagesMapType = {
   [K in pages]: FC;
 };
@@ -23,10 +24,12 @@ const PageMap: pagesMapType = {
       default: module.Exercise,
     }))
   ),
+  UserStats: lazy(() => import('./pages/UserStats')),
 };
 const HomePage = PageMap['HomePage'];
 const AddWorkout = PageMap['AddWorkout'];
 const Exercise = PageMap['Exercise'];
+const UserStats = PageMap['UserStats'];
 
 const router = createBrowserRouter([
   {
@@ -37,7 +40,7 @@ const router = createBrowserRouter([
         index: true,
         element: (
           <ErrorBoundary fallback={<ErrorHandler screen={true} />}>
-            <Suspense fallback={<div>Loading Page ...</div>}>
+            <Suspense fallback={<Loader screen={true} />}>
               <HomePage />
             </Suspense>
           </ErrorBoundary>
@@ -47,7 +50,7 @@ const router = createBrowserRouter([
         path: 'addWorkout',
         element: (
           <ErrorBoundary fallback={<ErrorHandler screen={true} />}>
-            <Suspense fallback={<div>Loading Page ...</div>}>
+            <Suspense fallback={<Loader screen={true} />}>
               <AddWorkout />
             </Suspense>
           </ErrorBoundary>
@@ -57,8 +60,18 @@ const router = createBrowserRouter([
         path: 'exercise',
         element: (
           <ErrorBoundary fallback={<ErrorHandler screen={true} />}>
-            <Suspense fallback={<div>Loading Page ...</div>}>
+            <Suspense fallback={<Loader screen={true} />}>
               <Exercise />
+            </Suspense>
+          </ErrorBoundary>
+        ),
+      },
+      {
+        path: 'stats',
+        element: (
+          <ErrorBoundary fallback={<ErrorHandler screen={true} />}>
+            <Suspense fallback={<Loader screen={true} />}>
+              <UserStats />
             </Suspense>
           </ErrorBoundary>
         ),
@@ -71,14 +84,14 @@ function App() {
     return state.login;
   });
   if (loading) {
-    return <>Work in progress</>;
+    return <Loader screen={true} />;
   }
   if (data) {
     return <RouterProvider router={router} />;
   }
   return (
     <div>
-      <Suspense fallback={<div>Loading...</div>}>
+      <Suspense fallback={<Loader screen={true} />}>
         <LazyLogin />
       </Suspense>
     </div>

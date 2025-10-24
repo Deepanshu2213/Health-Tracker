@@ -8,6 +8,7 @@ import { useGetExercisesQuery } from '../store/apis/Exercise';
 import { getKeys } from '../utils/utiltiy';
 import { shallowEqual, useSelector } from 'react-redux';
 import type { RootState } from '../store';
+import { Loader } from '../components/Loader';
 
 export interface exerciseMap {
   [id: string]: exerciseData;
@@ -43,7 +44,7 @@ const ExerciseMain: FC<ExerciseMainProps> = ({
   }
   const block = () => {};
   if (isLoading) {
-    return 'Loading';
+    return <Loader />;
   }
   const addExercise = () => {
     const exercises = getKeys(selectedExercise);
@@ -74,7 +75,7 @@ const ExerciseMain: FC<ExerciseMainProps> = ({
           type="text"
           name="searchbar"
           placeholder="Search term"
-          className="border-1 border-slate-300 text-xl p-3"
+          className="border-2 border-neutral-700 text-xl p-3"
         ></input>
         <div className="flex flex-col gap-[2rem] max-h-[75vh] overflow-y-auto">
           {data?.map((exercise) => (

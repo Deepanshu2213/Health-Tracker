@@ -3,6 +3,7 @@ import { sequelize } from '../../config/db.js';
 import { User } from '../../User/models/User.js';
 export interface WorkoutAttributes {
   id: number;
+  name: string;
   userId: number;
   createdAt?: Date;
   updatedAt?: Date;
@@ -16,6 +17,7 @@ export class Workout
 {
   declare id: number;
   declare userId: number;
+  declare name: string;
   declare createdAt?: Date;
   declare updatedAt?: Date;
 }
@@ -30,6 +32,10 @@ Workout.init(
     userId: {
       type: DataTypes.INTEGER,
       references: { model: 'Users', key: 'id' },
+      allowNull: false,
+    },
+    name: {
+      type: DataTypes.STRING,
       allowNull: false,
     },
   },

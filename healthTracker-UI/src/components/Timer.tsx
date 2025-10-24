@@ -17,7 +17,7 @@ export const Timer: FC<TimerProps> = ({
   const [elapsed, setElapsed] = useState<number>(value || 0);
   const [running, setRunning] = useState<boolean>(false);
   const cls = classNames(
-    'justify-center items-center cursor border b-2 rounded-lg w-full max-w-xs flex',
+    'justify-center items-center cursor border b-2 border-neutral-500 rounded-lg w-full max-w-xs flex',
     className
   );
   useEffect(() => {

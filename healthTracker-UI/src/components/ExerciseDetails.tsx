@@ -49,8 +49,10 @@ export const ExerciseDetailsMain: FC<ExerciseDetailsProps> = ({
   return (
     <div
       key={id}
-      className={`flex flex-col border boreder-1 ${
-        isSelected ? 'text-cyan-400 border-cyan-500 border-3' : ''
+      className={`flex flex-col ${
+        isSelected
+          ? 'text-cyan-400 border-cyan-500 border-3'
+          : 'border-1 shadow-lg border-neutral-700'
       } rounded-xl py-[1.5rem]`}
       onClick={setSelection}
     >
