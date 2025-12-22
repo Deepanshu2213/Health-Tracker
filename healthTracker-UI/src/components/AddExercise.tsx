@@ -1,4 +1,4 @@
-import { useEffect, type FC, type ReactNode } from 'react';
+import { useEffect, type FC, type KeyboardEvent, type ReactNode } from 'react';
 import { Trash2 } from 'lucide-react';
 import classNames from 'classnames';
 import { shallowEqual, useDispatch, useSelector } from 'react-redux';
@@ -6,6 +6,7 @@ import { deleteSetExercise, type loginDispatch } from '../store';
 import { type RootState, addSetToExercice, updateSets } from '../store';
 import { Timer } from './Timer';
 import type { Set } from '../interface/Workout_Interfaces';
+import { useResizeContext } from '../hooks/useResizeContext';
 interface AddExerciseProps {
   className?: string;
   children?: ReactNode;
@@ -18,6 +19,7 @@ export const AddExercise: FC<AddExerciseProps> = ({
   itemId,
 }) => {
   const dispatch = useDispatch<loginDispatch>();
+  const { width } = useResizeContext();
   const workoutName = useSelector((state: RootState) => {
     return state.addWorkout.data?.exerciseSets.find(
       (record) => record.id == itemId
@@ -36,9 +38,9 @@ export const AddExercise: FC<AddExerciseProps> = ({
     const id = Date.now().toString(36) + Math.random().toString(36).slice(2);
     const newModel: Set = {
       id,
-      setNo: 0,
-      repsCount: 0,
-      weight: 0,
+      setNo: 1,
+      repsCount: 1,
+      weight: 1,
       timeTaken: 0,
       finished: false,
     };
@@ -58,23 +60,28 @@ export const AddExercise: FC<AddExerciseProps> = ({
   );
   return (
     <div className={cls}>
-      <div className="flex w-full">
+      <div className="flex w-full ">
         <div className="flex-1 p-3">{workoutName}</div>
-        <div className="flex flex-1 justify-end p-2 gap-3 items-center text-lg">
+        <div className="flex flex-1 justify-end p-2 gap-3 items-center text-lg px-4">
           <button
-            className="px-3 shadow-lg py-1 rounded-lg bg-slate-600"
+            className="px-3 shadow-lg py-1 rounded-lg bg-blue-600"
             onClick={addNewSet}
           >
             Add Set
           </button>
-          <Trash2 onClick={deleteThisWorkOut} />
+          <Trash2
+            onClick={deleteThisWorkOut}
+            className="bg-red-700 px-1 rounded-lg"
+            height={35}
+            width={35}
+          />
         </div>
       </div>
       <div className="flex px-5 py-3 text-lg gap-[2.2vw]">
         <p className="flex-[0.2]">Set</p>
         <p className="flex-1">Reps</p>
         <p className="flex-1 ml-3">Weight (lbs)</p>
-        <p className="flex-1 ml-5">✓</p>
+        {width > 700 ? <p className={`flex-1 ml-5`}>✓</p> : ''}
         <p className="flex-1 ml-4">Timer</p>
       </div>
       {setIds?.map((setId, idx) => (
@@ -95,6 +102,7 @@ interface getSetProps {
   exerciseSetId: string;
 }
 const GetSet: FC<getSetProps> = ({ setId, idx, exerciseSetId }) => {
+  const { width } = useResizeContext();
   const repsCount = useSelector((state: RootState) => {
     return state.addWorkout.data?.exerciseSets
       .find((rec) => rec.id == exerciseSetId)
@@ -121,12 +129,20 @@ const GetSet: FC<getSetProps> = ({ setId, idx, exerciseSetId }) => {
     }
     dispatch(updateSets({ val, name, exerciseSetId, setId }));
   };
+  const keyPress = (e: KeyboardEvent<HTMLInputElement>) => {
+    debugger;
+    if (e.key == '-' || e.key == 'e' || e.key == '0') {
+      e.preventDefault();
+    }
+  };
   return (
-    <div className="flex p-5 text-lg gap-[2rem]">
+    <div className="flex p-5 text-lg gap-[1vw]">
       <div className="flex-[0.2] content-center">{idx}</div>
       <input
         className={inputCls}
         value={repsCount}
+        min={1}
+        onKeyDown={keyPress}
         name="repsCount"
         onChange={setValueChangeHandler}
         type="number"
@@ -135,16 +151,24 @@ const GetSet: FC<getSetProps> = ({ setId, idx, exerciseSetId }) => {
         className={inputCls}
         value={weight}
         name="weight"
+        min={1}
+        onKeyDown={keyPress}
         onChange={setValueChangeHandler}
         type="number"
       />
-      <input
-        className={inputCls}
-        value={finished ? 1 : 0}
-        name="finished"
-        onChange={setValueChangeHandler}
-        type="text"
-      />
+      {width > 700 ? (
+        <input
+          className={inputCls}
+          value={finished ? 1 : 0}
+          min={1}
+          onKeyDown={keyPress}
+          name="finished"
+          onChange={setValueChangeHandler}
+          type="text"
+        />
+      ) : (
+        ''
+      )}
       <SetTimer setId={setId} exerciseSetId={exerciseSetId} />
     </div>
   );
@@ -155,6 +179,7 @@ interface SetTimerInterface {
   exerciseSetId: string;
 }
 const SetTimer: FC<SetTimerInterface> = ({ setId, exerciseSetId }) => {
+  const { width } = useResizeContext();
   const timeTaken = useSelector(
     (state: RootState) =>
       state.addWorkout.data.exerciseSets
@@ -166,5 +191,11 @@ const SetTimer: FC<SetTimerInterface> = ({ setId, exerciseSetId }) => {
   const onChange = (val: number) => {
     dispatch(updateSets({ val, name: 'timeTaken', exerciseSetId, setId }));
   };
-  return <Timer className="flex-[1]" onChange={onChange} value={timeTaken} />;
+  return (
+    <Timer
+      className={`${width > 700 ? 'flex-1' : 'flex-[2.5]'}`}
+      onChange={onChange}
+      value={timeTaken}
+    />
+  );
 };

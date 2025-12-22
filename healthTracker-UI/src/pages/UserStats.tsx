@@ -1,11 +1,20 @@
 import { TrendingUp } from 'lucide-react';
 import { ConsistencyChart } from '../charts/consistency';
 import wrappedComponent from '../utils/wrappedComponent';
+import type { FC } from 'react';
+import { ErrorBoundary } from 'react-error-boundary';
+import {
+  ActivityTracker,
+  ActivityTrackerHeader,
+} from '../components/ActivityTracker';
+import { RecentWorkoutPanel } from '../components/RecentWorkoutPanel';
+import { useGetWorkoutStatsQuery } from '../store';
+import { Loader } from '../components/Loader';
 
-const UserStatsMain = () => {
+export const UserStatsMain = () => {
   return (
     <div className="min-h-screen w-full flex flex-col items-center justify-center">
-      <div className="w-[40%] flex flex-col justify-center border-2 shadow-xl border-neutral-700 rounded-lg">
+      <div className="w-[40%] flex flex-col justify-center border-2 shadow-xl border-neutral-700 rounded-lg chart-media">
         <div className="w4-[40%] text-xl text-center py-5 flex gap-2 justify-center items-center">
           <TrendingUp className="text-purple-500" height={30} width={30} />
           <p>Workout Frequency</p>
@@ -20,4 +29,32 @@ const UserStatsMain = () => {
   );
 };
 
-export default wrappedComponent(UserStatsMain, { light: false, screen: true });
+export const UserStatsPage: FC = () => {
+  const { data, isLoading } = useGetWorkoutStatsQuery();
+  const analyticsData = data?.data['getStats'][0];
+  if (isLoading) return <Loader />;
+  return (
+    <div className="w-full flex flex-col items-center">
+      <div className="flex text-3xl w-full justify-center my-4">
+        <div className="w-[66%] flex justify-between items-center">
+          <h1 className="text-start">Workout Statictics</h1>
+          <button
+            className={`text-2xl rounded-xl shadow-lg border-3 border-neutral-700 p-2 m-2`}
+          >{`Current streak: ${analyticsData?.current_streak || 'NA'}`}</button>
+        </div>
+      </div>
+      <div className="gap-[2rem] w-[66%] home-resize">
+        <ActivityTrackerHeader />
+        <ErrorBoundary
+          fallback={<ActivityTracker type={'TableBased'} error={true} />}
+        >
+          <ActivityTracker type={'TableBased'} />
+        </ErrorBoundary>
+        <br />
+        <RecentWorkoutPanel />
+      </div>
+    </div>
+  );
+};
+
+export default wrappedComponent(UserStatsPage, { light: false, screen: true });

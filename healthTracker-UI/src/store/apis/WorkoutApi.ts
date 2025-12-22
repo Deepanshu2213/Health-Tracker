@@ -91,14 +91,30 @@ export const WorkoutApi = createApi({
           };
         },
       }),
-      getAllWorkOut: builder.query<ResponseObj<Workout>, { day?: number }>({
+      getAllWorkOut: builder.query<
+        ResponseObj<Workout>,
+        { day?: number; customDay?: string }
+      >({
         providesTags: () => {
           return [{ type: 'Workout' }];
         },
-        query: ({ day }) => {
+        query: ({ day, customDay }) => {
           return {
             method: 'GET',
-            url: `/current${day || day == 0 ? `?day=${day}` : ''}`,
+            url: `/current${day || day == 0 ? `?day=${day}` : ''}${
+              day || day == 0 ? '&' : '?'
+            }customDay=${customDay || ''}`,
+          };
+        },
+      }),
+      getWorkAnalytics: builder.query<graphQlResponse<Workout>, undefined>({
+        providesTags: () => {
+          return [{ type: 'Workout' }];
+        },
+        query: () => {
+          return {
+            method: 'GET',
+            url: '/analytics',
           };
         },
       }),
@@ -111,4 +127,5 @@ export const {
   useGetWorkoutQuery,
   useGetWorkoutStatsQuery,
   useGetAllWorkOutQuery,
+  useGetWorkAnalyticsQuery,
 } = WorkoutApi;

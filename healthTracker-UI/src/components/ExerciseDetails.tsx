@@ -11,6 +11,8 @@ export interface exerciseData {
   difficulty: string;
 }
 
+export type exerciseDataNew = Omit<exerciseData, 'id'>;
+
 interface ExerciseDetailsProps {
   data: exerciseData;
   id: number;
@@ -38,7 +40,7 @@ export const ExerciseDetailsMain: FC<ExerciseDetailsProps> = ({
     if (setSelected) {
       setSelected((prev) => {
         if (prev[data.id] != null) {
-          const { [data.id]: _, ...rest } = prev;
+          const { [data.id]: v2, ...rest } = prev;
           return rest;
         }
         return { ...prev, [data.id]: data };

@@ -28,6 +28,7 @@ export interface Workout {
 export interface newWorkOut {
   exerciseSets: ExerciseSet[];
   userId: number;
+  name: string;
 }
 
 export interface WrokoutStatsView {

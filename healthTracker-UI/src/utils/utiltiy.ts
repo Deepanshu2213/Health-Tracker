@@ -8,6 +8,19 @@ export interface googleAuthParams {
   scope: string;
 }
 
+export const debounce = (
+  fn: (...args: any) => any,
+  time: number
+): ((...args: any) => void) => {
+  let timeOutId: ReturnType<typeof setTimeout>;
+  return (...args: any) => {
+    clearTimeout(timeOutId);
+    timeOutId = setTimeout(() => {
+      fn(...args);
+    }, time);
+  };
+};
+
 export const getGooleAuthUrl = () => {
   const baseUrl = 'https://accounts.google.com/o/oauth2/v2/auth';
   const options = {

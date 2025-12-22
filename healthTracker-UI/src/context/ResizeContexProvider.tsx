@@ -10,7 +10,7 @@ interface ResizeCordinates {
   width: number;
   height: number;
 }
-const ResizeContext = createContext<ResizeCordinates>({
+export const ResizeContext = createContext<ResizeCordinates>({
   height: window.innerHeight,
   width: window.innerWidth,
 });

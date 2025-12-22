@@ -49,14 +49,23 @@ input :focus {
   .icon-space-not-available{
     display: none;
   }
+  .home-resize-full{
+    width: 98%;
+  }
+  .chart-media{
+    width: 90%;
+  }
 }
 
 @media screen and (max-width: 726px){
-  .home-resize{
+  .home-resize .home-resize-full{
     width: 95%;
   }
   .heading{
     margin: 0%;
+  }
+  .chart-media{
+    width: 80%;
   }
 }
 @media screen and (max-width: 1025px){
@@ -66,4 +75,11 @@ input :focus {
   .heading{
     margin: 1rem;
   }
+}
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+.no-scrollbar {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
 }

@@ -18,7 +18,7 @@ const Panel: FC<PanelProps> = ({
   screen,
 }) => {
   const clss = classNames(
-    'max-[400px]:text-sm tracking-wide h-full w-full',
+    'text-size tracking-wide h-full w-full',
     overlay ? 'backdrop-blur-lg rounded-xl border-2 border-white/20' : '',
     className ? className : '',
     light ? 'bg-gray-900 text-gray-300' : 'bg-neutral-900 text-neutral-300',

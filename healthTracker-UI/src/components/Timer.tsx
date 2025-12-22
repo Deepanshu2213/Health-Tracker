@@ -72,7 +72,7 @@ export const Timer: FC<TimerProps> = ({
       {running ? (
         <TimerOff className="flex-[0.4] pr-2" onClick={stopTimer} />
       ) : (
-        <TimerIcon className="flex-[0.4] pr-2" onClick={startTimer} />
+        <TimerIcon className="flex-[0.4] pr-1" onClick={startTimer} />
       )}
     </div>
   );

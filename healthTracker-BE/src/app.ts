@@ -9,6 +9,7 @@ import userRoutes from './User/routes/UserRoutes.js';
 import { exerciseRoutes } from './Exercise/routes/exercise.routes.js';
 import { exerciseSetRoutes } from './ExerciseSet/ExerciseRoutes.js';
 import { WorkoutRoutes } from './Workout/WorkoutRoutes.js';
+import cors from 'cors';
 const app = express();
 
 import { sequelize } from './config/db.js';
@@ -24,6 +25,20 @@ try {
   //await sequelize.sync({ force: true });
 
   //app.use('/user', UserRoutes);
+  const prodOrigins = process.env.ALLOWED_ORIGINS
+    ? process.env.ALLOWED_ORIGINS.split(',')
+    : [];
+
+  app.use(
+    cors({
+      origin: (origin, callback) => {
+        if (!origin) return callback(null, true);
+        if (prodOrigins.includes(origin || '')) return callback(null, true);
+        return callback(new Error('Not allowed by CORS'));
+      },
+      credentials: true,
+    })
+  );
   app.use('/user', userRoutes);
   app.use(checkAuth);
   app.use('/exercise', exerciseRoutes);

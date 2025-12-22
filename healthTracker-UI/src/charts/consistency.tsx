@@ -7,8 +7,29 @@ import {
   VictoryCursorContainer,
   VictoryTooltip,
 } from 'victory';
+import { useGetWorkAnalyticsQuery } from '../store';
+
+interface xy {
+  x: string;
+  y: number;
+}
 
 export const ConsistencyChart: FC = () => {
+  const { data, isLoading } = useGetWorkAnalyticsQuery(undefined);
+  const anaData = data?.data || {};
+  let dateKeys = Object.keys(data?.data || {});
+  dateKeys.sort((d1, d2) => {
+    return new Date(d1) < new Date(d2) ? 1 : 0;
+  });
+  const xyMapper: xy[] = [];
+  dateKeys.forEach((key) => {
+    const cdate = new Date(key);
+    xyMapper.push({
+      x: `${cdate.getDay()}/${cdate.getMonth()}`,
+      y: anaData[key].length,
+    });
+  });
+  console.log(xyMapper);
   return (
     <div
       style={{
@@ -69,13 +90,7 @@ export const ConsistencyChart: FC = () => {
 
         {/* Data line */}
         <VictoryLine
-          data={[
-            { x: 1, y: 2 },
-            { x: 2, y: 3 },
-            { x: 3, y: 5 },
-            { x: 4, y: 4 },
-            { x: 5, y: 7 },
-          ]}
+          data={xyMapper}
           style={{
             data: { stroke: '#A855F7', strokeWidth: 2 },
           }}

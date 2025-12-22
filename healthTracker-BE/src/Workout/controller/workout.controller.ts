@@ -5,9 +5,14 @@ import type { Workout } from '../models/Workout.js';
 import type { Request, Response, NextFunction } from 'express';
 import {
   generateGenericError,
+  setGenericAnalyticsResponse,
   setGenericResponse,
 } from '../../utils/loginUtil.js';
 import type { ErrorObj } from '../../interface/ErrorObj.js';
+import {
+  WorkoutAnalytic,
+  workoutDivder,
+} from '../../analytics/WorkoutAnalytic.js';
 
 export class WorkoutController extends BaseController<Workout> {
   constructor(
@@ -38,7 +43,15 @@ export class WorkoutController extends BaseController<Workout> {
   ) => {
     try {
       let dayParam = req.query.day;
-      if (!dayParam) {
+      let customDay = req.query.customDay as string;
+      if (customDay && customDay.length > 0) {
+        let customStartTime = new Date(customDay);
+        const rec = await this.getWorkoutInRange(
+          customStartTime,
+          new Date(customStartTime)
+        );
+        setGenericResponse(rec, 200, res);
+      } else if (!dayParam) {
         const startDate = new Date();
         const endDate = new Date();
         startDate.setDate(startDate.getDate() - 1);
@@ -82,5 +95,22 @@ export class WorkoutController extends BaseController<Workout> {
       order: [['createdAt', 'DESC']],
     });
     return recordInRange;
+  };
+  getWorkoutAnalytics = async (
+    req: Request,
+    res: Response,
+    next: NextFunction
+  ) => {
+    const endDate = new Date();
+    const startDate = new Date();
+    startDate.setDate(startDate.getDate() - 100);
+    const workoutAnalytic = new WorkoutAnalytic(
+      startDate,
+      endDate,
+      20,
+      workoutDivder
+    );
+    const divideData = await workoutAnalytic.getDistributedData();
+    setGenericAnalyticsResponse(divideData, res, 200);
   };
 }

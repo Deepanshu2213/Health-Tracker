@@ -24,7 +24,13 @@ export const createGenericToken = <T extends Model>(entity: T) => {
   });
 };
 export const setCookie = (res: Response, key: string, value: any) => {
-  res.cookie(key, value, { maxAge: 1000 * 60 * 60 * 5 });
+  const isProd = process.env.NODE_ENV === 'production';
+  res.cookie(key, value, {
+    maxAge: 1000 * 60 * 60 * 5,
+    httpOnly: true,
+    secure: isProd, // false locally, true in prod
+    sameSite: isProd ? 'none' : 'lax',
+  });
 };
 
 export const generateResponseObj = (
@@ -85,4 +91,16 @@ export const genericResponseObject = <T extends Model>(
     data: models,
     error: error,
   };
+};
+
+export const setGenericAnalyticsResponse = <E extends Model>(
+  data: { [key: string]: E[] },
+  res: Response,
+  status: number
+) => {
+  const resp = {
+    data: data,
+    success: true,
+  };
+  res.status(status).json(resp);
 };

@@ -23,7 +23,7 @@ export class BaseController<E extends Model> {
   };
   getEntityById = async (req: Request, res: Response, next: NextFunction) => {
     try {
-      let { id } = req.body;
+      let { id } = req.params;
       const data = await this.service.getEntityById(id as string);
       setGenericResponse<E>(data ? [data] : [], 200, res);
     } catch (err) {

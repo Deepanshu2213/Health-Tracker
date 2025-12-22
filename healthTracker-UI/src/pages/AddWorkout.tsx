@@ -18,6 +18,7 @@ import { BasePopup } from '../components/BasePopup';
 import { Exercise } from './Exercise';
 import { useModlaHooks } from '../hooks/useModalHook';
 import { useLocation } from 'react-router-dom';
+import { useResizeContext } from '../hooks/useResizeContext';
 
 const AddWorkoutMain = () => {
   const dispatch = useDispatch<loginDispatch>();
@@ -46,7 +47,7 @@ const AddWorkoutMain = () => {
   }, shallowEqual);
   return (
     <div className="flex flex-col items-center py-[1rem]">
-      <div className="flex flex-col w-[65%] p-[1rem] gap-[1rem] home-resize">
+      <div className="flex flex-col w-[65%] p-[1rem] gap-[1rem] home-resize-full">
         <Header />
         <input
           type="email"
@@ -68,7 +69,7 @@ const AddWorkoutMain = () => {
 
 const Header: FC = () => {
   const [isOpen, setOpen] = useModlaHooks();
-
+  const { width } = useResizeContext();
   const [saveWorkoutCall, { isLoading }] = useSaveWorkoutMutation();
   const dispatch = useDispatch();
   const addWorkout = () => {
@@ -87,6 +88,14 @@ const Header: FC = () => {
   };
   const saveWorkout = async () => {
     const newWorkout: newWorkOut = sanatizeWorkoutModel();
+    if (!newWorkout.name || newWorkout.name.trim() === '') {
+      alert('Please enter a valid workout name');
+      return;
+    }
+    if (!newWorkout.exerciseSets || newWorkout.exerciseSets.length == 0) {
+      alert('Please Add Workout');
+      return;
+    }
     await saveWorkoutCall(newWorkout);
     dispatch(removeWorkout());
   };
@@ -108,18 +117,22 @@ const Header: FC = () => {
     });
   };
   return (
-    <div className="flex ">
-      <div className="flex-1 content-center text-2xl p-2">Start Workout</div>
-      <div className="flex-1 justify-end flex gap-[1rem]">
+    <div className={`flex ${width < 700 ? 'flex-col gap-2' : ''}`}>
+      <div className="flex-1 content-center text-2xl p-1">Start Workout</div>
+      <div
+        className={`flex-1 ${width < 700 ? '' : 'justify-end'} flex gap-[1rem]`}
+      >
         <button
-          className="flex text-lg gap-2 rounded-xl px-3 border-2 border-white/20 items-center"
+          className={`flex ${
+            width < 700 ? 'flex-1' : ''
+          } text-lg gap-2 rounded-xl px-3 items-center py-2 bg-gray-800 border-2 border-gray-700 hover:border-gray-600 rounded-lg`}
           onClick={addWorkout}
         >
           <Save />
           Add Exercise
         </button>
         <button
-          className="flex text-lg gap-2 rounded-xl px-3 border-2 border-white/20 items-center"
+          className="flex text-lg gap-2 rounded-xl px-3 items-center py-2 bg-green-600 hover:bg-green-700 rounded-lg"
           onClick={isLoading ? () => {} : saveWorkout}
         >
           <Plus />

@@ -8,6 +8,7 @@ WorkoutRoutes.get('/', workoutController.getAllNested);
 WorkoutRoutes.post('/save', workoutController.saveEntity);
 WorkoutRoutes.get('/findAll', workoutController.getAllNested);
 WorkoutRoutes.get('/current', workoutController.getCurrentWorkout);
+WorkoutRoutes.get('/analytics', workoutController.getWorkoutAnalytics);
 
 WorkoutRoutes.use(
   '/graphql',

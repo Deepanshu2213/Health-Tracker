@@ -1,9 +1,16 @@
 import { useState, type Dispatch, type FC, type SetStateAction } from 'react';
 import wrappedComponent from '../utils/wrappedComponent';
 import { Calendar, Dumbbell } from 'lucide-react';
-import { useGetAllWorkOutQuery, type RootState } from '../store';
+import {
+  useGetAllWorkOutQuery,
+  type loginDispatch,
+  type RootState,
+} from '../store';
 import type { ExerciseSet } from '../interface/Workout_Interfaces';
 import { useNavigate } from 'react-router-dom';
+import { useResizeContext } from '../hooks/useResizeContext';
+import { useDispatch, useSelector } from 'react-redux';
+import { updateWorkout } from '../store/slices/CurretWorkout';
 
 const RecentWorkoutPanelMain: FC = () => {
   const [currentDay, setCurrentDay] = useState<number | undefined>();
@@ -51,12 +58,14 @@ const LastWorkOutPanel: FC<LastWorkOutPanelProps> = ({
   setCurrentDay,
   currentDay,
 }) => {
+  const dispatch = useDispatch<loginDispatch>();
   const buttonOnClick = (
     e: React.MouseEvent<HTMLButtonElement>,
     key: number
   ) => {
     e.preventDefault();
     setCurrentDay(key);
+    dispatch(updateWorkout(''));
   };
   return (
     <div>
@@ -69,7 +78,9 @@ const LastWorkOutPanel: FC<LastWorkOutPanelProps> = ({
                 : ''
             }`}
             key={id}
-            onClick={(e) => buttonOnClick(e, id)}
+            onClick={(e) => {
+              buttonOnClick(e, id);
+            }}
           >
             {w}
           </button>
@@ -84,9 +95,15 @@ interface ContentPanelProps {
 }
 
 const ContentPanel: FC<ContentPanelProps> = ({ currentDay }) => {
+  const currentDateSelection = useSelector(
+    (state: RootState) => state.currentWorkout
+  );
   const { isLoading, data, isError } = useGetAllWorkOutQuery({
     day: currentDay,
+    customDay: currentDateSelection,
   });
+  debugger;
+  const { width } = useResizeContext();
   const navigateTo = useNavigate();
   const workout = data?.data[0];
   const name = workout?.name;
@@ -106,14 +123,22 @@ const ContentPanel: FC<ContentPanelProps> = ({ currentDay }) => {
   };
   return (
     <div className="flex-1 h-full w-full bg-neutral-900">
-      <div className="p-[1.5rem] flex flex-col gap-[2rem]">
+      <div
+        className={`${
+          width > 700 ? 'p-[1.5rem]' : ''
+        } flex flex-col gap-[2rem]`}
+      >
         <div className="text-2xl grid grid-cols-[0.1fr_1fr] place-items-center w-fit">
           <Calendar className="inline mx-2 text-purple-400 " />
-          <p>{`${day >= 0 ? weekdays[day] : 'Last'} Workout`}</p>
+          <p>{`${day >= 0 ? weekdays[day] : 'Last'} ${
+            currentDateSelection
+              ? new Date(currentDateSelection).toLocaleDateString()
+              : 'selected'
+          } Workout`}</p>
         </div>
         <div className="mx-3 flex">
           <div className="flex-1">
-            <p className="text-lg bg-purple-700 rounded-full font-semibold p-3 text-neutral-200 w-fit">
+            <p className="text-lg bg-purple-700 rounded-full font-semibold p-3 text-neutral-200 w-fit text-center @max-[400px]:text-sm">
               {name || 'Back Day'}
             </p>
           </div>
@@ -157,12 +182,21 @@ const ContentPanelSetsRender: FC<ContentPanelSetsRenderProps> = ({
     minWeight = Math.min(minWeight, set.weight);
     maxWeight = Math.max(maxWeight, set.weight);
   });
+  const { width } = useResizeContext();
   return (
-    <div className="p-[1.5rem] flex flex-col text-xl m-[2rem] rounded-lg border-2 border-neutral-700 text-neutral-300 bg-neutral-800 shadow-lg">
+    <div
+      className={`${
+        width > 700 ? 'p-[1.5rem] m-[2rem]' : 'p-[1rem] my-[1.5rem]'
+      } flex flex-col text-xl rounded-lg border-2 border-neutral-700 text-neutral-300 bg-neutral-800 shadow-lg`}
+    >
       <div className="flex flex-col gap-2">
         <div className="flex items-center">
           <p className="flex-1 flex-start">{exerciseSet.Exercise?.name}</p>
-          <p className="flex-1 text-end ml-3 text-red-400 bg-red font-bold">
+          <p
+            className={`flex-1 text-end ml-3 text-red-400 bg-red font-bold ${
+              width > 700 ? '' : 'pr-[1rem]'
+            }`}
+          >
             Strength
           </p>
         </div>
