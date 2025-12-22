@@ -13,11 +13,7 @@ interface AddExerciseProps {
   itemId: string;
 }
 
-export const AddExercise: FC<AddExerciseProps> = ({
-  className,
-  children,
-  itemId,
-}) => {
+export const AddExercise: FC<AddExerciseProps> = ({ className, itemId }) => {
   const dispatch = useDispatch<loginDispatch>();
   const { width } = useResizeContext();
   const workoutName = useSelector((state: RootState) => {

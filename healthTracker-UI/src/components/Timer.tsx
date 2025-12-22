@@ -7,12 +7,7 @@ interface TimerProps {
   value?: number;
   onChange?: (value: number) => void;
 }
-export const Timer: FC<TimerProps> = ({
-  className,
-  inputCls,
-  onChange,
-  value,
-}) => {
+export const Timer: FC<TimerProps> = ({ className, onChange, value }) => {
   const [startTime, setStartTime] = useState<number | null>(null);
   const [elapsed, setElapsed] = useState<number>(value || 0);
   const [running, setRunning] = useState<boolean>(false);
@@ -21,7 +16,7 @@ export const Timer: FC<TimerProps> = ({
     className
   );
   useEffect(() => {
-    let interval: number | null = null;
+    let interval: ReturnType<typeof setInterval>;
     if (running) {
       if (!startTime) {
         setStartTime(Date.now() - elapsed);

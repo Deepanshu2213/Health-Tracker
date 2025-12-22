@@ -21,7 +21,8 @@ export const WorkoutApi = createApi({
   endpoints: (builder) => {
     return {
       saveWorkout: builder.mutation<Workout, newWorkOut>({
-        invalidatesTags: (result, error, arg) => {
+        invalidatesTags: () => {
+          //result, error, arg
           return [{ type: 'Workout' }];
         },
         query: (workout) => {
@@ -39,7 +40,8 @@ export const WorkoutApi = createApi({
           endDate: string;
         }
       >({
-        providesTags: (data, error, args) => {
+        providesTags: (data) => {
+          //data, error, args
           const workoutData = data?.data['getWorkout'].map((workout) => ({
             type: 'Workout' as const,
             id: workout.id,

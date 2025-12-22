@@ -1,4 +1,4 @@
-import { configureStore, type Middleware } from '@reduxjs/toolkit';
+import { configureStore } from '@reduxjs/toolkit';
 import { loginSliceReducer } from './slices/loginSlice';
 import { setupListeners } from '@reduxjs/toolkit/query';
 import { addWorkoutReducer } from './slices/addWorkoutSlice';
@@ -6,15 +6,15 @@ import { WorkoutApi } from './apis/WorkoutApi';
 import { ExerciseApi } from './apis/Exercise';
 import { CurrentWorkoutReducer } from './slices/CurretWorkout';
 
-const middleware: Middleware = (store) => (next) => (action) => {
-  console.log('%c Previous State:', 'color: gray', store.getState());
-  console.log('%c Action:', 'color: blue', action);
+// const middleware: Middleware = (store) => (next) => (action) => {
+//   console.log('%c Previous State:', 'color: gray', store.getState());
+//   console.log('%c Action:', 'color: blue', action);
 
-  const result = next(action);
+//   const result = next(action);
 
-  console.log('%c Next State:', 'color: green', store.getState());
-  return result;
-};
+//   console.log('%c Next State:', 'color: green', store.getState());
+//   return result;
+// };
 
 export const store = configureStore({
   reducer: {

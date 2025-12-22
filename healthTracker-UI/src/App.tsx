@@ -80,7 +80,7 @@ const router = createBrowserRouter([
   },
 ]);
 function App() {
-  const { loading, error, data } = useSelector((state: RootState) => {
+  const { loading, data } = useSelector((state: RootState) => {
     return state.login;
   });
   if (loading) {

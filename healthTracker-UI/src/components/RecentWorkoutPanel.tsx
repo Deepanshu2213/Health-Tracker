@@ -1,6 +1,6 @@
 import { useState, type Dispatch, type FC, type SetStateAction } from 'react';
 import wrappedComponent from '../utils/wrappedComponent';
-import { Calendar, Dumbbell } from 'lucide-react';
+import { Calendar } from 'lucide-react';
 import {
   useGetAllWorkOutQuery,
   type loginDispatch,
@@ -98,7 +98,7 @@ const ContentPanel: FC<ContentPanelProps> = ({ currentDay }) => {
   const currentDateSelection = useSelector(
     (state: RootState) => state.currentWorkout
   );
-  const { isLoading, data, isError } = useGetAllWorkOutQuery({
+  const { data } = useGetAllWorkOutQuery({
     day: currentDay,
     customDay: currentDateSelection,
   });

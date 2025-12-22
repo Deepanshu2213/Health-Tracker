@@ -1,10 +1,9 @@
 import { createSlice, type PayloadAction } from '@reduxjs/toolkit';
-interface CurrentWorkout {}
 const CurrentWorkoutSlice = createSlice({
   name: 'CurrentWorkout',
   initialState: '' as string,
   reducers: {
-    updateWorkout: (state, action: PayloadAction<string>) => {
+    updateWorkout: (_, action: PayloadAction<string>) => {
       return action.payload;
     },
   },

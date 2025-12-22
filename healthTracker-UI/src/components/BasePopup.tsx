@@ -21,7 +21,7 @@ export const BasePopup: FC<BasePopupProps> = ({ children, setOpen }) => {
   return createPortal(
     <div
       className="absolute inset-0 flex items-center justify-center bg-black/10 bg-opacity-50 backdrop-blur-sm"
-      onClick={(e) => {
+      onClick={() => {
         setOpen(false);
       }}
     >

@@ -15,7 +15,7 @@ interface xy {
 }
 
 export const ConsistencyChart: FC = () => {
-  const { data, isLoading } = useGetWorkAnalyticsQuery(undefined);
+  const { data } = useGetWorkAnalyticsQuery(undefined);
   const anaData = data?.data || {};
   let dateKeys = Object.keys(data?.data || {});
   dateKeys.sort((d1, d2) => {

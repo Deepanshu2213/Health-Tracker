@@ -46,7 +46,7 @@ export const addWorkoutSlice = createSlice({
         state.data.exerciseSets = action.payload;
       }
     },
-    saveWorkout: (state) => {},
+    saveWorkout: () => {},
     updateSets: (
       state,
       action: PayloadAction<{

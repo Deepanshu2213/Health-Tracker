@@ -33,7 +33,7 @@ export const ExerciseApi = createApi({
         ResponseObj<exerciseData>,
         exerciseDataNew
       >({
-        invalidatesTags: (res) => {
+        invalidatesTags: () => {
           return [{ type: 'exercise' }];
         },
         query: (exercise) => {

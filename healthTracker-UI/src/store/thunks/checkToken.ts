@@ -6,7 +6,9 @@ import type { ResponseObj } from '../interfaces/ResponseInterface';
 export const CheckToken = createAsyncThunk<ResponseObj<User>, undefined>(
   'checkToken',
   async () => {
-    const response = await axios.get<ResponseObj<User>>('api/user/checkToken');
+    const response = await axios.get<ResponseObj<User>>('api/user/checkToken', {
+      withCredentials: true,
+    });
     return response.data;
   }
 );

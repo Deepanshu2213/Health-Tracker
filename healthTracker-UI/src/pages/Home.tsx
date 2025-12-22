@@ -30,7 +30,7 @@ const NamePanel: FC = () => {
   );
 };
 const Heading: FC = () => {
-  const { height, width } = useResizeContext();
+  const { width } = useResizeContext();
   const navigate = useNavigate();
   const startWorkout = () => {
     navigate('/addWorkout');
