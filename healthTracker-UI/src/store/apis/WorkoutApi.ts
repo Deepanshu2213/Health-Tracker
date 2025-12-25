@@ -16,8 +16,7 @@ export const WorkoutApi = createApi({
   reducerPath: 'Workout',
   tagTypes: ['Workout'],
   baseQuery: fetchBaseQuery({
-    baseUrl: `${import.meta.env.VITE_API_BASE_URL}/workout`,
-    credentials: 'include',
+    baseUrl: 'api/workout',
   }),
   endpoints: (builder) => {
     return {

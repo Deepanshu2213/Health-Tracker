@@ -9,8 +9,7 @@ export const ExerciseApi = createApi({
   reducerPath: 'Exercise',
   tagTypes: ['exercise'],
   baseQuery: fetchBaseQuery({
-    baseUrl: `${import.meta.env.VITE_API_BASE_URL}/exercise`,
-    credentials: 'include',
+    baseUrl: 'api/exercise',
   }),
   endpoints: (builder) => {
     return {

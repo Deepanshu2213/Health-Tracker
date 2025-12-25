@@ -1,12 +1,12 @@
 import { createAsyncThunk } from '@reduxjs/toolkit';
+import axios from 'axios';
 import type { User } from '../slices/loginSlice';
 import type { ResponseObj } from '../interfaces/ResponseInterface';
-import { api } from '../../proxy/api';
 
 export const CheckToken = createAsyncThunk<ResponseObj<User>, undefined>(
   'checkToken',
   async () => {
-    const response = await api.get<ResponseObj<User>>('user/checkToken', {
+    const response = await axios.get<ResponseObj<User>>('api/user/checkToken', {
       withCredentials: true,
     });
     return response.data;
