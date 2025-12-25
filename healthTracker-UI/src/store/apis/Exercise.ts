@@ -25,7 +25,7 @@ export const ExerciseApi = createApi({
         query: () => {
           return {
             method: 'GET',
-            url: '/',
+            url: '',
           };
         },
       }),
