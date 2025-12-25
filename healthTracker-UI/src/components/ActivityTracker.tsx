@@ -60,7 +60,7 @@ const ActivityTrackerMain: FC<ActivityTrackerProps> = ({ type, error }) => {
   }) => {
     const currDate = new Date();
     currDate.setDate(1 + currDate.getDate() - rows * columns);
-    currDate.setHours(0, 0, 0, 0);
+    // currDate.setHours(0, 0, 0, 0);
     return (
       <table className="table-fixed w-full border-separate border-spacing-1">
         <tbody>
