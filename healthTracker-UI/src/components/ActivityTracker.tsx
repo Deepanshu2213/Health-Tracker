@@ -98,7 +98,9 @@ const ActivityTrackerMain: FC<ActivityTrackerProps> = ({ type, error }) => {
   }) => {
     const dispatch = useDispatch<loginDispatch>();
     return Array.from({ length: columns }).map((_, id) => {
-      const workoutsPerformed = dateMapper[date.getTime()];
+      let key: string = date.toISOString();
+      key = key.split('T')[0];
+      const workoutsPerformed = dateMapper[key];
       let dateJson = date.toJSON();
       const jsx = (
         <td

@@ -14,7 +14,10 @@ const WorkoutGraphQl = new GraphQLObjectType({
     id: { type: GraphQLInt },
     createdAt: {
       type: GraphQLString,
-      resolve: (workout) => workout.get('createdAt').setHours(0, 0, 0, 0),
+      resolve: (workout) => {
+        const date = workout.get('createdAt');
+        return date.toISOString().split('T')[0];
+      },
     },
     updatedAt: { type: GraphQLString },
   }),
