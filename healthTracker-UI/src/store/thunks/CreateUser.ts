@@ -1,5 +1,4 @@
 import { createAsyncThunk } from '@reduxjs/toolkit';
-import axios from 'axios';
 import type { User } from '../slices/loginSlice';
 import type { LoginArgs } from './loginThunks';
 import type { ResponseObj } from '../interfaces/ResponseInterface';
