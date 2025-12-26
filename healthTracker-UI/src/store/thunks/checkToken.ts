@@ -9,7 +9,7 @@ export const CheckToken = createAsyncThunk<ResponseObj<User>, undefined>(
     const params = new URLSearchParams(window.location.search);
     const token = params.get('token');
     const response = await axios.get<ResponseObj<User>>(
-      `api/user/checkToken${token ? `/?token=${token}` : ''}`,
+      `api/user/checkToken${token ? `?token=${token}` : ''}`,
       {
         withCredentials: true,
       }
