@@ -32,8 +32,7 @@ export class UserController extends BaseController<User> {
       if (!code) return res.status(400).send('No code provided');
       const user = await this.service.oauth(code as string);
       const cookie = createGenericToken(user);
-      setCookie(res, 'authToken', cookie);
-      res.redirect(process.env.UI_REDIRECT as string);
+      res.redirect(`${process.env.UI_REDIRECT}?token=${cookie}`);
     } catch (err) {
       const errorObj: ErrorObj = generateGenericError(err, 400);
       next(errorObj);
