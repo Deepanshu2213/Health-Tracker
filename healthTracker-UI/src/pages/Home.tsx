@@ -96,7 +96,7 @@ const Hi: FC = () => {
         {bannerList(bannetListConfig)}
         <div className="flex flex-col items-center backdrop-blur-lg rounded-xl border-2 border-white/20 text-3xl">
           <h1 className="text-center mx-2 my-5 p-2">Workout Statistics</h1>
-          <div className="w-[60%] h-[60%]">
+          <div className="consistency-chart">
             <ConsistencyChart />
           </div>
         </div>

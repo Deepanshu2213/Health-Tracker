@@ -10,6 +10,7 @@ import {
 import { RecentWorkoutPanel } from '../components/RecentWorkoutPanel';
 import { useGetWorkoutStatsQuery } from '../store';
 import { Loader } from '../components/Loader';
+import { useResizeContext } from '../hooks/useResizeContext';
 
 export const UserStatsMain = () => {
   return (
@@ -31,16 +32,27 @@ export const UserStatsMain = () => {
 
 export const UserStatsPage: FC = () => {
   const { data, isLoading } = useGetWorkoutStatsQuery();
+  const { width } = useResizeContext();
   const analyticsData = data?.data['getStats'][0];
   if (isLoading) return <Loader />;
   return (
     <div className="w-full flex flex-col items-center">
       <div className="flex text-3xl w-full justify-center my-4">
-        <div className="w-[66%] flex justify-between items-center">
-          <h1 className="text-start">Workout Statictics</h1>
+        <div
+          className={`${
+            width > 700
+              ? 'flex justify-between items-center w-[66%]'
+              : 'flex flex-col items-center w-[90%] gap-2 m-1'
+          }`}
+        >
+          <h1 className={`${width > 700 ? 'text-start' : 'text-center'}`}>
+            Workout Statictics
+          </h1>
           <button
-            className={`text-2xl rounded-xl shadow-lg border-3 border-neutral-700 p-2 m-2`}
-          >{`Current streak: ${analyticsData?.current_streak || 'NA'}`}</button>
+            className={`text-2xl rounded-xl shadow-lg border-3 border-neutral-700 ${
+              width > 700 ? ' p-2 m-2' : 'py-2 w-full'
+            }`}
+          >{`Current streak: ${analyticsData?.current_streak || '0'}`}</button>
         </div>
       </div>
       <div className="gap-[2rem] w-[66%] home-resize">

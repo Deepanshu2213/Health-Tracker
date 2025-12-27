@@ -6,6 +6,7 @@ import { ErrorHandler } from './ErrorHandle';
 import { Loader } from './Loader';
 import { useDispatch } from 'react-redux';
 import { updateWorkout } from '../store/slices/CurretWorkout';
+import { useResizeContext } from '../hooks/useResizeContext';
 interface size {
   height: number | undefined;
   width: number | undefined;
@@ -38,6 +39,7 @@ const ActivityTrackerMain: FC<ActivityTrackerProps> = ({ type, error }) => {
     );
     setSize({ height: height, width: width });
   };
+  const { width: screenWidth } = useResizeContext();
   useEffect(() => {
     setSizeOnChange();
     const changeHandler = () => {
@@ -149,6 +151,19 @@ const ActivityTrackerMain: FC<ActivityTrackerProps> = ({ type, error }) => {
     });
     return <div className="flex flex-col gap-2">{ele}</div>;
   };
+  const scrollableDiv = useRef<HTMLDivElement | null>(null);
+  useEffect(() => {
+    const div = scrollableDiv.current;
+    let maxScroll = 0;
+    debugger;
+    if (div && screenWidth < 1250) {
+      maxScroll = div?.scrollWidth - div?.clientWidth;
+      div?.scrollTo({
+        left: maxScroll * (65 / 100),
+        behavior: 'smooth',
+      });
+    }
+  });
   const rows = 7,
     columns = 50;
   const endDate = new Date();
@@ -180,8 +195,8 @@ const ActivityTrackerMain: FC<ActivityTrackerProps> = ({ type, error }) => {
   }
   return (
     <div className="flex flex-col w-full h-full">
-      <div ref={trackContainer} className="h-[22vh] p-2 w-full">
-        <div className="flex gap-2 h-full overflow-y-auto">
+      <div ref={trackContainer} className="h-[22vh] p-2">
+        <div className="flex gap-2 h-full overflow-y-auto" ref={scrollableDiv}>
           {type == 'TableBased' ? (
             <GenerateTable rows={rows} dateMapper={records} columns={columns} />
           ) : (

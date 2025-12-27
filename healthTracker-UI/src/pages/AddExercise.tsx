@@ -2,11 +2,13 @@ import { useState, type ChangeEvent, type FC } from 'react';
 import wrappedComponent from '../utils/wrappedComponent';
 import type { exerciseDataNew } from '../components/ExerciseDetails';
 import { useSaveExerciseMutation } from '../store/apis/Exercise';
+import { useResizeContext } from '../hooks/useResizeContext';
 
 const AddExerciseMain: FC<{
   setOpen?: React.Dispatch<React.SetStateAction<boolean>>;
 }> = ({ setOpen }) => {
   const [saveExercise, { data }] = useSaveExerciseMutation();
+  const { width } = useResizeContext();
   if (data) {
     setOpen?.(false);
   }
@@ -26,7 +28,11 @@ const AddExerciseMain: FC<{
   };
   const inputCls = 'flex-1 min-w-0 p-2 border-1 border-neutral-500 rounded-lg';
   return (
-    <div className="w-[100%] h-[80vh] flex flex-col items-center">
+    <div
+      className={`w-[100%] ${
+        width < 1000 ? 'h-[50vh]' : 'h-[80vh]'
+      } flex flex-col items-center`}
+    >
       <h1 className="text-xl text-center p-2">Add New Exercise</h1>
       <form className="flex flex-col gap-[1rem] w-[70%] min-h-[10vh]">
         <input

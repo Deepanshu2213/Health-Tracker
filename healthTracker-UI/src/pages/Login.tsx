@@ -9,6 +9,7 @@ import type { LoginArgs } from '../store';
 import type { loginDispatch } from '../store';
 import { createUser } from '../store';
 import { getGooleAuthUrl } from '../utils/utiltiy';
+import { useResizeContext } from '../hooks/useResizeContext';
 
 const iconsList = (): ReactNode[] => {
   return [
@@ -18,9 +19,11 @@ const iconsList = (): ReactNode[] => {
   ];
 };
 const Login: FC = () => {
+  const { width } = useResizeContext();
+  console.log(width);
   return (
     <div className="flex min-h-screen min-w-screen overflow-y-auto">
-      <LeftPanel />
+      {width > 700 || !width ? <LeftPanel /> : ''}
       <RightPanel />
     </div>
   );
@@ -31,7 +34,7 @@ const LeftPanel: FC = () => {
 };
 const RightPanel: FC = () => {
   return (
-    <div className="flex-1 h-full flex flex-col justify-center items-center bg-gray-100 text-gray-700 font-medium">
+    <div className="flex-1 min-h-screen flex flex-col justify-center items-center bg-gray-100 text-gray-700 font-medium">
       <div className="w-full h-full content-center">
         <AuthLoginCont />
       </div>
@@ -43,6 +46,7 @@ const AuthLoginCont: FC = () => {
   const loginToggle = () => {
     setLogin((prev) => !prev);
   };
+  const { width } = useResizeContext();
   const dispatch = useDispatch<loginDispatch>();
   const email = useRef<HTMLInputElement | null>(null);
   const password = useRef<HTMLInputElement | null>(null);
@@ -61,17 +65,25 @@ const AuthLoginCont: FC = () => {
   };
   const inputCls = 'flex flex-col';
   return (
-    <div className="flex flex-col m-[4rem] justify-evenly">
+    <div
+      className={`flex flex-col ${
+        width <= 450 ? 'm-[2rem]' : 'm-[4rem]'
+      } justify-evenly`}
+    >
       <div className="flex-1 justify-items-center text-center mb-[2rem]">
         <h1 className="mb-[1rem]">{`${
           login ? 'Login' : 'Create '
         } an account`}</h1>
-        <button className="w-full rounded-md flex items-center justify-center gap-3 border-3 p-[1rem] border-gray-300">
+        <button
+          className={`w-full rounded-md flex items-center justify-center gap-3 border-3 p-[1rem] border-gray-300 ${
+            width <= 900 ? 'text-base' : ''
+          }`}
+        >
           {<a href={getGooleAuthUrl()}>Login account with google</a>}
           <FaGoogle />
         </button>
       </div>
-      <div className="flex items-center w-full my-[2rem]">
+      <div className={`flex items-center w-full ${login ? 'my-[2rem]' : ''}`}>
         <div className="flex-1 border-b-2 border-gray-300"></div>
         <p className="mx-4 text-gray-600">OR</p>
         <div className="flex-1 border-b-2 border-gray-300"></div>

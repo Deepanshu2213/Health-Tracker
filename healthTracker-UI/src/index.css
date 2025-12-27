@@ -1,1 +1,4 @@
 @import "tailwindcss";
+.btn-cl{
+  @apply shadow-lg border-3 border-neutral-700
+}

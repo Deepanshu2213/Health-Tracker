@@ -60,14 +60,14 @@ export const AddExercise: FC<AddExerciseProps> = ({ className, itemId }) => {
         <div className="flex-1 p-3">{workoutName}</div>
         <div className="flex flex-1 justify-end p-2 gap-3 items-center text-lg px-4">
           <button
-            className="px-3 shadow-lg py-1 rounded-lg bg-blue-600"
+            className="px-2 shadow-lg py-1 rounded-lg bg-neutral-800 border-1 border-neutral-700 text-base"
             onClick={addNewSet}
           >
             Add Set
           </button>
           <Trash2
             onClick={deleteThisWorkOut}
-            className="bg-red-700 px-1 rounded-lg"
+            className="bg-[#ffffff1a] px-1 border-1 border-neutral-700 rounded-lg"
             height={35}
             width={35}
           />

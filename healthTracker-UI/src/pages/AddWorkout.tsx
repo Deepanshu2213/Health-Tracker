@@ -125,7 +125,7 @@ const Header: FC = () => {
         <button
           className={`flex ${
             width < 700 ? 'flex-1' : ''
-          } text-lg gap-2 rounded-xl px-3 items-center py-2 bg-gray-800 border-2 border-gray-700 hover:border-gray-600 rounded-lg`}
+          } text-lg gap-2 rounded-xl px-3 items-center py-2 btn-cl rounded-lg`}
           onClick={addWorkout}
         >
           <Save />

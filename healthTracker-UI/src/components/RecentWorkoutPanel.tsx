@@ -14,6 +14,7 @@ import { updateWorkout } from '../store/slices/CurretWorkout';
 
 const RecentWorkoutPanelMain: FC = () => {
   const [currentDay, setCurrentDay] = useState<number | undefined>();
+  const { width } = useResizeContext();
   return (
     <div className="h-[50rem] flex flex-col p-[1rem]">
       <div className="grid grid-cols-[0.1fr_1fr] place-items-center w-fit py-5 text-3xl">
@@ -22,11 +23,14 @@ const RecentWorkoutPanelMain: FC = () => {
           height={40}
           width={30}
         />
-        <h1 className="font-bold">Workout Activity</h1>
+        <h1 className={`font-bold ${width <= 800 ? 'text-xl' : ''}`}>
+          Workout Activity
+        </h1>
       </div>
       <div className="flex flex-col gap-[2rem] flex-1 overflow-hidden">
         {/* <Dumbbell size={48 * 1.5} /> */}
         <LastWorkOutPanel
+          width={width}
           setCurrentDay={setCurrentDay}
           currentDay={currentDay}
         />
@@ -53,10 +57,12 @@ const weekdays = [
 interface LastWorkOutPanelProps {
   setCurrentDay: Dispatch<SetStateAction<number | undefined>>;
   currentDay: number | undefined;
+  width: number;
 }
 const LastWorkOutPanel: FC<LastWorkOutPanelProps> = ({
   setCurrentDay,
   currentDay,
+  width,
 }) => {
   const dispatch = useDispatch<loginDispatch>();
   const buttonOnClick = (
@@ -72,11 +78,11 @@ const LastWorkOutPanel: FC<LastWorkOutPanelProps> = ({
       <div className="flex h-full gap-[2%] justify-evenly overflow-x-auto">
         {weekdays.map((w, id) => (
           <button
-            className={`border-2 border-neutral-600 w-[8rem] h-[3rem] m-1 px-2 py-1 rounded-lg shadow-lg scale-105 ${
+            className={`border-2 border-neutral-600 w-[8rem] h-[3rem] m-1 px-2 py-1 rounded-lg shadow-lg ${
               currentDay == id
                 ? 'bg-purple-700 font-semibold border-purple-600'
                 : ''
-            }`}
+            } ${width <= 800 ? 'text-base' : 'scale-105'}`}
             key={id}
             onClick={(e) => {
               buttonOnClick(e, id);
@@ -125,10 +131,10 @@ const ContentPanel: FC<ContentPanelProps> = ({ currentDay }) => {
     <div className="flex-1 h-full w-full bg-neutral-900">
       <div
         className={`${
-          width > 700 ? 'p-[1.5rem]' : ''
+          width > 900 ? 'p-[1.5rem] text-2xl ' : 'text-lg'
         } flex flex-col gap-[2rem]`}
       >
-        <div className="text-2xl grid grid-cols-[0.1fr_1fr] place-items-center w-fit">
+        <div className="grid grid-cols-[0.1fr_1fr] place-items-center w-fit">
           <Calendar className="inline mx-2 text-purple-400 " />
           <p>{`${day >= 0 ? weekdays[day] : 'Last'} ${
             currentDateSelection
@@ -138,13 +144,13 @@ const ContentPanel: FC<ContentPanelProps> = ({ currentDay }) => {
         </div>
         <div className="mx-3 flex">
           <div className="flex-1">
-            <p className="text-lg bg-purple-700 rounded-full font-semibold p-3 text-neutral-200 w-fit text-center @max-[400px]:text-sm">
+            <p className="bg-purple-700 rounded-full font-semibold p-3 text-neutral-200 w-fit text-center @max-[400px]:text-sm">
               {name || 'Back Day'}
             </p>
           </div>
           {workout && workout?.exerciseSets.length >= 0 && (
             <button
-              className="text-lg bg-neutral-800 rounded-full font-semibold p-4 w-fit text-neutral-200 ml-1"
+              className="bg-neutral-800 rounded-full font-semibold p-4 w-fit text-neutral-200 ml-1"
               type="submit"
               onClick={routeCreateWorkout}
             >
@@ -186,8 +192,10 @@ const ContentPanelSetsRender: FC<ContentPanelSetsRenderProps> = ({
   return (
     <div
       className={`${
-        width > 700 ? 'p-[1.5rem] m-[2rem]' : 'p-[1rem] my-[1.5rem]'
-      } flex flex-col text-xl rounded-lg border-2 border-neutral-700 text-neutral-300 bg-neutral-800 shadow-lg`}
+        width > 700
+          ? 'p-[1.5rem] m-[2rem] text-xl'
+          : 'p-[1rem] my-[1.5rem] text-base'
+      } flex flex-col rounded-lg border-2 border-neutral-700 text-neutral-300 bg-neutral-800 shadow-lg`}
     >
       <div className="flex flex-col gap-2">
         <div className="flex items-center">
@@ -200,7 +208,7 @@ const ContentPanelSetsRender: FC<ContentPanelSetsRenderProps> = ({
             Strength
           </p>
         </div>
-        <div className="flex gap-4">
+        <div className={`flex  gap-4`}>
           <p>{`Sets: ${exerciseSet.sets.length}`}</p>
           <p>{`Reps: ${minReps}-${maxReps}`}</p>
           <p>{`Weight: ${minWeight}-${maxWeight}`}</p>
