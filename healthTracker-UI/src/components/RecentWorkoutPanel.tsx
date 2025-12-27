@@ -194,7 +194,7 @@ const ContentPanelSetsRender: FC<ContentPanelSetsRenderProps> = ({
       className={`${
         width > 700
           ? 'p-[1.5rem] m-[2rem] text-xl'
-          : 'p-[1rem] my-[1.5rem] text-base'
+          : 'p-[1rem] my-[1.5rem] text-sm'
       } flex flex-col rounded-lg border-2 border-neutral-700 text-neutral-300 bg-neutral-800 shadow-lg`}
     >
       <div className="flex flex-col gap-2">

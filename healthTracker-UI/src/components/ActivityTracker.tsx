@@ -159,7 +159,7 @@ const ActivityTrackerMain: FC<ActivityTrackerProps> = ({ type, error }) => {
     if (div && screenWidth < 1250) {
       maxScroll = div?.scrollWidth - div?.clientWidth;
       div?.scrollTo({
-        left: maxScroll * (65 / 100),
+        left: maxScroll * (85 / 100),
         behavior: 'smooth',
       });
     }
