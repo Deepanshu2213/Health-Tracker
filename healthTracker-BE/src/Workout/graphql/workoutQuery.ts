@@ -16,7 +16,7 @@ const WorkoutGraphQl = new GraphQLObjectType({
       type: GraphQLString,
       resolve: (workout) => {
         const date = workout.get('createdAt');
-        return date.toISOString().split('T')[0];
+        return date.toISOString();
       },
     },
     updatedAt: { type: GraphQLString },
@@ -57,7 +57,6 @@ const workoutQuery = new GraphQLObjectType({
         let { startDate, endDate } = args;
         startDate = startDate ? new Date(startDate) : undefined;
         endDate = endDate ? new Date(endDate) : undefined;
-        endDate.setHours(23, 59, 59, 59);
         return await workoutService.getAllEntity({
           where: {
             createdAt: { [Op.gte]: startDate, [Op.lte]: endDate },
@@ -74,14 +73,16 @@ const workoutQuery = new GraphQLObjectType({
     },
     getStats: {
       type: new GraphQLList(WorkoutStatsViewGraphQl),
+      args: {
+        startDate: { type: GraphQLString },
+      },
       resolve: async (_parent, args, context) => {
         const { req, res } = context;
         const userId = req.user.id;
-        const startDate = new Date();
-        startDate.setHours(0, 0, 0, 0);
+        let { startDate } = args;
+        startDate = new Date(startDate); //
         startDate.setFullYear(startDate.getFullYear() - 1);
         const endDate = new Date();
-        endDate.setHours(23, 59, 59, 59);
         const workouts = await workoutService.getAllEntity({
           where: {
             createdAt: { [Op.gte]: startDate, [Op.lte]: endDate },

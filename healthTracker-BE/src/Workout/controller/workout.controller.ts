@@ -46,9 +46,12 @@ export class WorkoutController extends BaseController<Workout> {
       let customDay = req.query.customDay as string;
       if (customDay && customDay.length > 0) {
         let customStartTime = new Date(customDay);
+        let customEndTime = new Date(customStartTime);
+        customEndTime.setDate(customEndTime.getDate() + 1);
+        customEndTime.setTime(customEndTime.getTime() - 1);
         const rec = await this.getWorkoutInRange(
           customStartTime,
-          new Date(customStartTime)
+          customEndTime
         );
         setGenericResponse(rec, 200, res);
       } else if (!dayParam) {
@@ -67,10 +70,10 @@ export class WorkoutController extends BaseController<Workout> {
           currentDate.setDate(currentDate.getDate() - currentDay);
           currentDate.setDate(currentDate.getDate() - (7 - day));
         }
-        let rec = await this.getWorkoutInRange(
-          currentDate,
-          new Date(currentDate)
-        );
+        currentDate.setHours(0, 0, 0, 0);
+        let endDate = new Date(currentDate);
+        endDate.setHours(23, 59, 59, 999);
+        let rec = await this.getWorkoutInRange(currentDate, endDate);
         setGenericResponse(rec, 200, res);
       }
     } catch (err) {
@@ -82,8 +85,6 @@ export class WorkoutController extends BaseController<Workout> {
     startDate: Date,
     endDate: Date
   ): Promise<Workout[]> => {
-    startDate.setHours(0, 0, 0, 0);
-    endDate.setHours(23, 59, 59, 59);
     const recordInRange = await this.service.getAllEntity({
       where: {
         createdAt: {

@@ -11,6 +11,7 @@ import { useNavigate } from 'react-router-dom';
 import { useResizeContext } from '../hooks/useResizeContext';
 import { useDispatch, useSelector } from 'react-redux';
 import { updateWorkout } from '../store/slices/CurretWorkout';
+import { Loader } from './Loader';
 
 const RecentWorkoutPanelMain: FC = () => {
   const [currentDay, setCurrentDay] = useState<number | undefined>();
@@ -104,7 +105,7 @@ const ContentPanel: FC<ContentPanelProps> = ({ currentDay }) => {
   const currentDateSelection = useSelector(
     (state: RootState) => state.currentWorkout
   );
-  const { data } = useGetAllWorkOutQuery({
+  const { data, isFetching } = useGetAllWorkOutQuery({
     day: currentDay,
     customDay: currentDateSelection,
   });
@@ -114,6 +115,9 @@ const ContentPanel: FC<ContentPanelProps> = ({ currentDay }) => {
   const workout = data?.data[0];
   const name = workout?.name;
   let day = -1;
+  if (isFetching) {
+    return <Loader screen={false} />;
+  }
   if (!currentDay && workout && workout.createdAt) {
     const firstRecordDate = new Date(workout.createdAt);
     day = firstRecordDate.getDay();

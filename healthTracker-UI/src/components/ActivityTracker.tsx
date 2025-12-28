@@ -61,6 +61,7 @@ const ActivityTrackerMain: FC<ActivityTrackerProps> = ({ type, error }) => {
     dateMapper,
   }) => {
     const currDate = new Date();
+    currDate.setHours(0, 0, 0, 0);
     currDate.setDate(1 + currDate.getDate() - rows * columns);
     // currDate.setHours(0, 0, 0, 0);
     return (
@@ -100,8 +101,7 @@ const ActivityTrackerMain: FC<ActivityTrackerProps> = ({ type, error }) => {
   }) => {
     const dispatch = useDispatch<loginDispatch>();
     return Array.from({ length: columns }).map((_, id) => {
-      let key: string = date.toISOString();
-      key = key.split('T')[0];
+      let key: number = date.getTime();
       const workoutsPerformed = dateMapper[key];
       let dateJson = date.toJSON();
       const jsx = (
@@ -155,8 +155,7 @@ const ActivityTrackerMain: FC<ActivityTrackerProps> = ({ type, error }) => {
   useEffect(() => {
     const div = scrollableDiv.current;
     let maxScroll = 0;
-    debugger;
-    if (div && screenWidth < 1250) {
+    if (div && screenWidth < 1000) {
       maxScroll = div?.scrollWidth - div?.clientWidth;
       div?.scrollTo({
         left: maxScroll * (85 / 100),
@@ -168,20 +167,25 @@ const ActivityTrackerMain: FC<ActivityTrackerProps> = ({ type, error }) => {
     columns = 50;
   const endDate = new Date();
   const startDate = new Date();
+  startDate.setHours(0, 0, 0, 0);
+  endDate.setHours(23, 59, 59, 999);
   startDate.setDate(1 + startDate.getDate() - rows * columns);
   const { data, isLoading, isError } = useGetWorkoutQuery({
-    startDate: startDate.toDateString(),
-    endDate: endDate.toDateString(),
+    startDate: startDate.toISOString(),
+    endDate: endDate.toISOString(),
   });
   if (isLoading) {
     return <Loader screen={false} />;
   }
   let records: dateMap = {};
   data?.data['getWorkout'].forEach((workout) => {
-    if (records[workout.createdAt || '']) {
-      records[workout.createdAt || ''].push(workout);
+    const hash = new Date(workout.createdAt || '');
+    hash.setHours(0, 0, 0, 0);
+    let key = hash.getTime();
+    if (records[key]) {
+      records[key].push(workout);
     } else {
-      records[workout.createdAt || ''] = [workout];
+      records[key] = [workout];
     }
   });
   if (isError || error) {

@@ -80,8 +80,8 @@ export const WorkoutApi = createApi({
             method: 'POST',
             url: '/graphql',
             body: {
-              query: `query {
-                getStats{
+              query: `query($startDate: String) {
+                getStats(startDate: $startDate){
                  userId
                  total_workouts
                  this_month
@@ -89,6 +89,7 @@ export const WorkoutApi = createApi({
                  max_streaks
                  }
                 }`,
+              variables: { startDate: new Date().toISOString() },
             },
           };
         },
