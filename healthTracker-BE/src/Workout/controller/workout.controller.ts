@@ -44,6 +44,7 @@ export class WorkoutController extends BaseController<Workout> {
     try {
       let dayParam = req.query.day;
       let customDay = req.query.customDay as string;
+      const userId = (req as any).user.id;
       if (customDay && customDay.length > 0) {
         let customStartTime = new Date(customDay);
         let customEndTime = new Date(customStartTime);
@@ -51,14 +52,15 @@ export class WorkoutController extends BaseController<Workout> {
         customEndTime.setTime(customEndTime.getTime() - 1);
         const rec = await this.getWorkoutInRange(
           customStartTime,
-          customEndTime
+          customEndTime,
+          userId
         );
         setGenericResponse(rec, 200, res);
       } else if (!dayParam) {
         const startDate = new Date();
         const endDate = new Date();
         startDate.setDate(startDate.getDate() - 1);
-        const rec = await this.getWorkoutInRange(startDate, endDate);
+        const rec = await this.getWorkoutInRange(startDate, endDate, userId);
         setGenericResponse(rec, 200, res);
       } else {
         let day = parseInt(dayParam as string);
@@ -73,7 +75,7 @@ export class WorkoutController extends BaseController<Workout> {
         currentDate.setHours(0, 0, 0, 0);
         let endDate = new Date(currentDate);
         endDate.setHours(23, 59, 59, 999);
-        let rec = await this.getWorkoutInRange(currentDate, endDate);
+        let rec = await this.getWorkoutInRange(currentDate, endDate, userId);
         setGenericResponse(rec, 200, res);
       }
     } catch (err) {
@@ -83,7 +85,8 @@ export class WorkoutController extends BaseController<Workout> {
   };
   getWorkoutInRange = async (
     startDate: Date,
-    endDate: Date
+    endDate: Date,
+    userId: number
   ): Promise<Workout[]> => {
     const recordInRange = await this.service.getAllEntity({
       where: {
@@ -91,6 +94,7 @@ export class WorkoutController extends BaseController<Workout> {
           [Op.gte]: startDate,
           [Op.lte]: endDate,
         },
+        userId: userId,
       },
       include: { all: true, nested: true },
       order: [['createdAt', 'DESC']],
