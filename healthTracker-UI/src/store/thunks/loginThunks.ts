@@ -2,20 +2,21 @@ import { createAsyncThunk } from '@reduxjs/toolkit';
 import axios from 'axios';
 import type { User } from '../slices/loginSlice';
 import type { ResponseObj } from '../interfaces/ResponseInterface';
+import type { LoginFormType } from '../../schemas/loginForm';
 export interface LoginArgs {
   name: string | undefined;
   email: string | undefined;
   password: string | undefined;
 }
-const loginUser = createAsyncThunk<ResponseObj<User>, LoginArgs>(
+const loginUser = createAsyncThunk<ResponseObj<User>, LoginFormType>(
   'login',
-  async (args: LoginArgs) => {
+  async (args: LoginFormType) => {
     //createAsyncThunk<ReturnedType, ArgType>(
     const response = await axios.post<ResponseObj<User>>(
       'api/user/login',
-      args
+      args,
     );
     return response.data;
-  }
+  },
 );
 export { loginUser };

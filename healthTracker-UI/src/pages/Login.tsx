@@ -105,7 +105,8 @@ const AuthLoginCont: FC = () => {
   const { width } = useResizeContext();
   const dispatch = useDispatch<loginDispatch>();
   const processLogin = (e: React.FormEvent<HTMLFormElement>): void => {
-    login ? dispatch(loginUser(loginForm)) : dispatch(createUser(loginForm));
+    const payload = { ...loginForm, name: loginForm.name || '' };
+    login ? dispatch(loginUser(payload)) : dispatch(createUser(payload));
     e.preventDefault();
   };
   const inputCls = 'flex flex-col';
