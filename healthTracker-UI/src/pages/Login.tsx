@@ -64,7 +64,7 @@ const AuthLoginCont: FC = () => {
     setLogin((prev) => !prev);
   };
   const isValidForValidation = (): boolean => {
-    Object.entries(loginForm).forEach(([key, value]) => {
+    Object.entries(loginForm).forEach(([_, value]) => {
       if (value) {
         return true;
       }
