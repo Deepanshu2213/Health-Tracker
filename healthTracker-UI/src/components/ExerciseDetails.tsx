@@ -1,6 +1,5 @@
 import type { FC } from 'react';
 import { getKeys } from '../utils/utiltiy';
-import wrappedComponent from '../utils/wrappedComponent';
 import type { exerciseMap } from '../pages/Exercise';
 
 export interface exerciseData {
@@ -51,15 +50,15 @@ export const ExerciseDetailsMain: FC<ExerciseDetailsProps> = ({
   return (
     <div
       key={id}
-      className={`flex flex-col ${
+      className={`flex flex-col shrink-0 ${
         isSelected
-          ? 'text-cyan-400 border-cyan-500 border-3'
-          : 'border-1 shadow-lg border-neutral-700'
-      } rounded-xl py-[1.5rem]`}
+          ? 'text-fuchsia-300 border-fuchsia-500 shadow-[0_0_15px_rgba(217,70,239,0.3)] bg-fuchsia-500/10'
+          : 'border-white/10 shadow-lg bg-white/5 hover:bg-white/10 hover:border-white/30 text-neutral-200'
+      } border rounded-2xl py-[1.5rem] backdrop-blur-xl transition-all duration-300 cursor-pointer`}
       onClick={setSelection}
     >
-      <div className="text-xl pb-4 px-3">{data.name}</div>
-      <div className="flex flex-col gap-[0.5rem] px-4">
+      <div className="text-2xl font-semibold pb-4 px-5 text-transparent bg-clip-text bg-gradient-to-r from-violet-400 to-fuchsia-300 tracking-wide">{data.name}</div>
+      <div className="flex flex-col gap-[0.8rem] px-5 text-lg">
         {headings.map((heading) => {
           return (
             <div className="flex w-full">
@@ -73,6 +72,4 @@ export const ExerciseDetailsMain: FC<ExerciseDetailsProps> = ({
   );
 };
 
-export const ExerciseDetails = wrappedComponent(ExerciseDetailsMain, {
-  overlay: true,
-});
+export const ExerciseDetails = ExerciseDetailsMain;

@@ -85,41 +85,44 @@ const ExerciseMain: FC<ExerciseMainProps> = ({
     setOpenModal((prev) => !prev);
   };
   return (
-    <div className="w-full flex justify-center items-center">
-      <div className="flex flex-col w-[65%] p-[1rem] gap-[1rem] home-resize">
-        <div className={`${width < 700 ? 'flex flex-col' : 'flex'}`}>
+    <div className="w-full flex justify-center items-center py-[2rem]">
+      <div className="flex flex-col w-[65%] p-[2rem] gap-[2rem] home-resize backdrop-blur-xl bg-white/5 border border-white/10 shadow-2xl rounded-3xl text-neutral-200">
+        <div className={`${width < 700 ? 'flex flex-col gap-4' : 'flex items-center'}`}>
           <div className="flex justify-between items-center w-full">
-            <p className="text-2xl p-1 my-1 flex-1">Exercise Library</p>
+            <h1 className="text-3xl p-1 my-1 flex-1 font-light tracking-wide text-transparent bg-clip-text bg-gradient-to-r from-violet-400 to-fuchsia-300">Exercise Library</h1>
             <button
               hidden={useInPopup ? true : false}
               onClick={modalChange}
               className={`flex ${
-                width < 700 ? 'flex-1' : ''
-              } text-lg gap-2 rounded-xl px-3 items-center py-2 btn-cl text-center rounded-lg`}
+                width < 700 ? 'flex-1 justify-center' : ''
+              } text-lg gap-2 px-6 items-center py-2 bg-gradient-to-r from-violet-600 to-fuchsia-600 hover:from-violet-500 hover:to-fuchsia-500 shadow-[0_0_15px_rgba(139,92,246,0.3)] hover:shadow-[0_0_25px_rgba(139,92,246,0.5)] rounded-xl transition-all font-semibold`}
             >
               Add Exercise
             </button>
           </div>
           {selectedCount > 0 && (
             <button
-              className={`text-xl p-1 my-2 ${
-                width < 700 ? 'w-full' : 'w-[23vh]'
-              } rounded-lg border border-1`}
+              className={`text-xl p-2 my-2 ${
+                width < 700 ? 'w-full' : 'w-auto px-6 ml-4'
+              } rounded-xl bg-green-600/90 hover:bg-green-500/90 shadow-[0_0_15px_rgba(22,163,74,0.3)] hover:shadow-[0_0_25px_rgba(22,163,74,0.5)] text-white transition-all font-semibold`}
               onClick={addExercise}
             >
               {`Add Workout(${selectedCount})`}
             </button>
           )}
         </div>
-        <input
-          type="text"
-          name="searchbar"
-          placeholder="Search term"
-          className="border-2 border-neutral-700 text-xl p-3"
-          onChange={onChange}
-          value={searchTerm}
-        ></input>
-        <div className="flex flex-col gap-[2rem] max-h-[75vh] overflow-y-auto">
+        <div className="relative">
+          <input
+            type="text"
+            name="searchbar"
+            placeholder="Search exercises..."
+            className="w-full bg-black/20 border border-white/10 rounded-2xl text-xl p-4 pl-12 focus:outline-none focus:border-violet-500 focus:ring-1 focus:ring-violet-500 transition-all placeholder-neutral-500 shadow-inner"
+            onChange={onChange}
+            value={searchTerm}
+          />
+          <svg className="w-6 h-6 text-neutral-500 absolute left-4 top-1/2 transform -translate-y-1/2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path></svg>
+        </div>
+        <div className="flex flex-col gap-[1.5rem] max-h-[65vh] overflow-y-auto pr-2 custom-scrollbar">
           {data?.map((exercise) => (
             <ExerciseDetails
               id={exercise.id}

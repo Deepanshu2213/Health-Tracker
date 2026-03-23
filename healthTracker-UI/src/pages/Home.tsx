@@ -16,15 +16,15 @@ const NamePanel: FC = () => {
   });
   const loggedInUser = user?.[0];
   return (
-    <div className={`flex items-center gap-4 flex-1 m-[3rem] heading`}>
-      <div className="w-16 h-16 bg-gradient-to-r from-purple-500 to-pink-500 rounded-full flex items-center justify-center text-2xl">
+    <div className="flex items-center gap-6 flex-1">
+      <div className="w-20 h-20 shrink-0 bg-gradient-to-br from-violet-500 to-fuchsia-500 shadow-lg shadow-violet-500/20 rounded-full flex items-center justify-center text-3xl">
         💪
       </div>
       <div>
-        <h1 className="text-[2rem]">{`${
-          loggedInUser ? loggedInUser.firstName : 'Na'
+        <h1 className="text-[2.5rem] leading-tight font-light tracking-wide text-transparent bg-clip-text bg-gradient-to-r from-violet-400 to-fuchsia-300">{`${
+          loggedInUser ? loggedInUser.firstName : 'Athlete'
         }`}</h1>
-        <p className="text-[1rem]">Level 15 - Build Strength</p>
+        <p className="text-xl text-neutral-300">Level 15 - Build Strength</p>
       </div>
     </div>
   );
@@ -37,18 +37,16 @@ const Heading: FC = () => {
   };
   return (
     <div
-      className={`flex ${width < 700 ? 'flex-col' : ''} w-[80%] home-resize`}
+      className={`flex ${width < 700 ? 'flex-col gap-6' : 'items-center justify-between'} w-[74%] home-resize backdrop-blur-xl bg-white/5 border border-white/10 shadow-2xl rounded-3xl p-8 mb-[1rem] mt-[3rem]`}
     >
       <NamePanel />
       <div
-        className={`flex-1 flex ${
-          width < 700 ? '' : 'justify-end pr-[3rem]'
-        } items-center`}
+        className={`flex shrink-0 ${width < 700 ? 'w-full' : ''}`}
       >
         <button
-          className={`text-2xl rounded-xl px-[1.2rem] shadow-lg border-3 border-neutral-700 p-[0.6rem] ${
+          className={`text-xl rounded-full px-8 py-4 font-semibold text-white bg-gradient-to-r from-violet-600 to-fuchsia-600 hover:from-violet-500 hover:to-fuchsia-500 shadow-[0_0_20px_rgba(139,92,246,0.3)] hover:shadow-[0_0_30px_rgba(139,92,246,0.5)] border border-white/20 hover:-translate-y-1 transition-all duration-300 ${
             width < 700 ? 'w-full' : ''
-          } h-fit`}
+          }`}
           onClick={startWorkout}
         >
           Start Workout
@@ -94,8 +92,8 @@ const Hi: FC = () => {
       <Heading />
       <div className="flex flex-col gap-[2rem] w-[74%] mb-[2rem] home-resize">
         {bannerList(bannetListConfig)}
-        <div className="flex flex-col items-center backdrop-blur-lg rounded-xl border-2 border-white/20 text-3xl">
-          <h1 className="text-center mx-2 my-5 p-2">Workout Statistics</h1>
+        <div className="flex flex-col items-center backdrop-blur-lg bg-white/5 shadow-2xl rounded-xl border-2 border-white/10 text-3xl">
+          <h1 className="text-center mx-2 my-5 p-2 font-light tracking-wide text-transparent bg-clip-text bg-gradient-to-r from-violet-400 to-fuchsia-300">Workout Statistics</h1>
           <div className="consistency-chart">
             <ConsistencyChart />
           </div>

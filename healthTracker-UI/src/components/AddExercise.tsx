@@ -51,25 +51,25 @@ export const AddExercise: FC<AddExerciseProps> = ({ className, itemId }) => {
     GenerateFirstSet(itemId);
   };
   const cls = classNames(
-    'flex flex-col text-2xl w-full border-2 border-neutral-600 rounded-lg',
+    'flex flex-col shrink-0 text-2xl w-full border border-white/10 bg-white/5 backdrop-blur-xl shadow-2xl rounded-2xl p-2 transition-all hover:bg-white/10',
     className
   );
   return (
     <div className={cls}>
       <div className="flex w-full ">
         <div className="flex-1 p-3">{workoutName}</div>
-        <div className="flex flex-1 justify-end p-2 gap-3 items-center text-lg px-4">
+        <div className="flex flex-1 justify-end p-2 gap-4 items-center text-lg px-4">
           <button
-            className="px-2 shadow-lg py-1 rounded-lg bg-neutral-800 border-1 border-neutral-700 text-base"
+            className="px-4 shadow-[0_0_10px_rgba(139,92,246,0.2)] hover:shadow-[0_0_15px_rgba(139,92,246,0.4)] py-2 rounded-xl bg-gradient-to-r from-violet-600 to-fuchsia-600 border border-transparent text-white font-semibold flex items-center transition-all hover:scale-105"
             onClick={addNewSet}
           >
             Add Set
           </button>
           <Trash2
             onClick={deleteThisWorkOut}
-            className="bg-[#ffffff1a] px-1 border-1 border-neutral-700 rounded-lg"
-            height={35}
-            width={35}
+            className="bg-red-500/10 hover:bg-red-500/20 text-red-400 p-2 rounded-xl border border-red-500/20 shadow-lg cursor-pointer transition-all hover:scale-110"
+            height={40}
+            width={40}
           />
         </div>
       </div>
@@ -116,7 +116,7 @@ const GetSet: FC<getSetProps> = ({ setId, idx, exerciseSetId }) => {
   }, shallowEqual);
 
   const dispatch = useDispatch<loginDispatch>();
-  const inputCls = 'flex-1 min-w-0 p-2 border-1 border-neutral-500 rounded-lg';
+  const inputCls = 'flex-1 min-w-0 p-3 bg-black/20 border border-white/10 text-white rounded-xl focus:outline-none focus:border-violet-500 focus:ring-1 focus:ring-violet-500 transition-all shadow-inner';
   const setValueChangeHandler = (e: React.ChangeEvent<HTMLInputElement>) => {
     let val: any = e.currentTarget.value;
     const name = e.currentTarget.name;

@@ -14,10 +14,10 @@ import { useResizeContext } from '../hooks/useResizeContext';
 
 export const UserStatsMain = () => {
   return (
-    <div className="min-h-screen w-full flex flex-col items-center justify-center">
-      <div className="w-[40%] flex flex-col justify-center border-2 shadow-xl border-neutral-700 rounded-lg chart-media">
-        <div className="w4-[40%] text-xl text-center py-5 flex gap-2 justify-center items-center">
-          <TrendingUp className="text-purple-500" height={30} width={30} />
+    <div className="min-h-screen w-full flex flex-col items-center justify-center py-10">
+      <div className="w-[40%] flex flex-col justify-center backdrop-blur-2xl bg-white/5 shadow-2xl rounded-3xl border border-white/10 chart-media overflow-hidden">
+        <div className="text-xl text-center py-5 flex gap-3 justify-center items-center font-light tracking-wide text-transparent bg-clip-text bg-gradient-to-r from-violet-400 to-fuchsia-300 border-b border-white/5">
+          <TrendingUp className="text-fuchsia-400" height={32} width={32} />
           <p>Workout Frequency</p>
         </div>
         <ConsistencyChart />
@@ -36,26 +36,18 @@ export const UserStatsPage: FC = () => {
   const analyticsData = data?.data['getStats'][0];
   if (isLoading) return <Loader />;
   return (
-    <div className="w-full flex flex-col items-center">
-      <div className="flex text-3xl w-full justify-center my-4">
-        <div
-          className={`${
-            width > 700
-              ? 'flex justify-between items-center w-[66%]'
-              : 'flex flex-col items-center w-[90%] gap-2 m-1'
-          }`}
-        >
-          <h1 className={`${width > 700 ? 'text-start' : 'text-center'}`}>
-            Workout Statictics
+    <div className="w-full flex flex-col items-center py-[2rem]">
+      <div className="flex flex-col gap-[2rem] w-[66%] home-resize backdrop-blur-xl bg-white/5 border border-white/10 shadow-2xl rounded-3xl p-6 sm:p-10 mt-6 mb-10">
+        <div className={`flex ${width > 700 ? 'justify-between items-center px-4' : 'flex-col gap-6 items-center'} w-full border-b border-white/5 pb-8`}>
+          <h1 className={`${width > 700 ? 'text-start' : 'text-center'} text-4xl font-light tracking-wide text-transparent bg-clip-text bg-gradient-to-r from-violet-400 to-fuchsia-300`}>
+            Workout Statistics
           </h1>
           <button
-            className={`text-2xl rounded-xl shadow-lg border-3 border-neutral-700 ${
-              width > 700 ? ' p-2 m-2' : 'py-2 w-full'
-            }`}
-          >{`Current streak: ${analyticsData?.current_streak || '0'}`}</button>
+            className={`text-xl rounded-full px-8 py-4 font-semibold text-white bg-gradient-to-r from-violet-600 to-fuchsia-600 shadow-[0_0_20px_rgba(139,92,246,0.3)] hover:shadow-[0_0_30px_rgba(139,92,246,0.5)] border border-white/20 hover:-translate-y-1 transition-all duration-300 ${width <= 700 ? 'w-full' : ''}`}
+          >
+            🔥 Current Streak: {analyticsData?.current_streak || '0'} Days
+          </button>
         </div>
-      </div>
-      <div className="gap-[2rem] w-[66%] home-resize">
         <ActivityTrackerHeader />
         <ErrorBoundary
           fallback={<ActivityTracker type={'TableBased'} error={true} />}

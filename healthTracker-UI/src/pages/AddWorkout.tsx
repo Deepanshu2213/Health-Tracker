@@ -46,18 +46,18 @@ const AddWorkoutMain = () => {
     return state.addWorkout.data.name;
   }, shallowEqual);
   return (
-    <div className="flex flex-col items-center py-[1rem]">
-      <div className="flex flex-col w-[65%] p-[1rem] gap-[1rem] home-resize-full">
+    <div className="flex flex-col items-center py-[2rem]">
+      <div className="flex flex-col w-[65%] p-[2rem] gap-[2rem] home-resize-full backdrop-blur-xl bg-white/5 border border-white/10 shadow-2xl rounded-3xl text-neutral-200">
         <Header />
         <input
-          type="email"
-          id="userEmail"
-          name="email"
+          type="text"
+          id="workoutName"
+          name="name"
           value={name}
           onChange={nameChange}
           required
           placeholder="Enter Workout name ..."
-          className="border-3 border-neutral-700 text-xl p-[1rem]"
+          className="bg-transparent border-b border-white/20 focus:border-violet-500 text-3xl px-2 py-4 outline-none placeholder-neutral-500 transition-colors w-full"
         />
         {exerciseSets?.map((id) => {
           return <AddExercise itemId={id} />;
@@ -117,26 +117,28 @@ const Header: FC = () => {
     });
   };
   return (
-    <div className={`flex ${width < 700 ? 'flex-col gap-2' : ''}`}>
-      <div className="flex-1 content-center text-2xl p-1">Start Workout</div>
+    <div className={`flex ${width < 700 ? 'flex-col gap-4' : 'items-center'} mb-4`}>
+      <div className="flex-1 content-center text-3xl p-1 font-light tracking-wide text-transparent bg-clip-text bg-gradient-to-r from-violet-400 to-fuchsia-300">Start Workout</div>
       <div
         className={`flex-1 ${width < 700 ? '' : 'justify-end'} flex gap-[1rem]`}
       >
         <button
           className={`flex ${
-            width < 700 ? 'flex-1' : ''
-          } text-lg gap-2 rounded-xl px-3 items-center py-2 btn-cl rounded-lg`}
+            width < 700 ? 'flex-1 justify-center' : ''
+          } text-lg gap-2 px-5 items-center py-3 bg-white/5 hover:bg-white/10 border border-white/10 shadow-lg rounded-xl transition-all`}
           onClick={addWorkout}
         >
-          <Save />
+          <Save size={20} />
           Add Exercise
         </button>
         <button
-          className="flex text-lg gap-2 rounded-xl px-3 items-center py-2 bg-green-600 hover:bg-green-700 rounded-lg"
+          className={`flex text-lg gap-2 px-6 items-center py-3 bg-gradient-to-r from-violet-600 to-fuchsia-600 hover:from-violet-500 hover:to-fuchsia-500 shadow-[0_0_15px_rgba(139,92,246,0.3)] hover:shadow-[0_0_25px_rgba(139,92,246,0.5)] rounded-xl transition-all font-semibold ${
+            width < 700 ? 'flex-1 justify-center' : ''
+          }`}
           onClick={isLoading ? () => {} : saveWorkout}
         >
-          <Plus />
-          {isLoading ? 'Loading' : 'Finish'}
+          <Plus size={20} />
+          {isLoading ? 'Loading...' : 'Finish'}
         </button>
       </div>
       {isOpen && (

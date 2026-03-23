@@ -79,11 +79,11 @@ const LastWorkOutPanel: FC<LastWorkOutPanelProps> = ({
       <div className="flex h-full gap-[2%] justify-evenly overflow-x-auto">
         {weekdays.map((w, id) => (
           <button
-            className={`border-2 border-neutral-600 w-[8rem] h-[3rem] m-1 px-2 py-1 rounded-lg shadow-lg ${
+            className={`w-[8rem] h-[3rem] m-1 px-4 py-1 rounded-xl shadow-lg transition-all duration-300 ${
               currentDay == id
-                ? 'bg-purple-700 font-semibold border-purple-600'
-                : ''
-            } ${width <= 800 ? 'text-base' : 'scale-105'}`}
+                ? 'bg-gradient-to-r from-violet-600 to-fuchsia-600 text-white font-semibold border-transparent shadow-[0_0_15px_rgba(139,92,246,0.3)]'
+                : 'bg-white/5 border border-white/10 text-neutral-400 hover:bg-white/10 hover:text-white'
+            } ${width <= 800 ? 'text-base' : 'hover:scale-105 hover:-translate-y-0.5'}`}
             key={id}
             onClick={(e) => {
               buttonOnClick(e, id);
@@ -132,7 +132,7 @@ const ContentPanel: FC<ContentPanelProps> = ({ currentDay }) => {
     });
   };
   return (
-    <div className="flex-1 h-full w-full bg-neutral-900">
+    <div className="flex-1 h-full w-full bg-transparent">
       <div
         className={`${
           width > 900 ? 'p-[1.5rem] text-2xl ' : 'text-lg'
@@ -148,13 +148,13 @@ const ContentPanel: FC<ContentPanelProps> = ({ currentDay }) => {
         </div>
         <div className="mx-3 flex">
           <div className="flex-1">
-            <p className="bg-purple-700 rounded-full font-semibold p-3 text-neutral-200 w-fit text-center @max-[400px]:text-sm">
+            <p className="bg-gradient-to-r from-violet-600 to-fuchsia-600 rounded-full font-semibold p-3 px-8 text-white w-fit text-center shadow-[0_0_15px_rgba(139,92,246,0.2)] @max-[400px]:text-sm">
               {name || 'Back Day'}
             </p>
           </div>
           {workout && workout?.exerciseSets.length >= 0 && (
             <button
-              className="bg-neutral-800 rounded-full font-semibold p-4 w-fit text-neutral-200 ml-1"
+              className="bg-white/10 hover:bg-white/20 border border-white/20 transition-all rounded-full font-semibold px-6 py-3 w-fit text-neutral-100 ml-1 shadow-lg backdrop-blur-md"
               type="submit"
               onClick={routeCreateWorkout}
             >
@@ -199,13 +199,13 @@ const ContentPanelSetsRender: FC<ContentPanelSetsRenderProps> = ({
         width > 700
           ? 'p-[1.5rem] m-[2rem] text-xl'
           : 'p-[1rem] my-[1.5rem] text-sm'
-      } flex flex-col rounded-lg border-2 border-neutral-700 text-neutral-300 bg-neutral-800 shadow-lg`}
+      } flex flex-col shrink-0 rounded-2xl border border-white/10 text-neutral-200 backdrop-blur-xl bg-white/5 shadow-2xl transition-all hover:bg-white/10`}
     >
       <div className="flex flex-col gap-2">
         <div className="flex items-center">
           <p className="flex-1 flex-start">{exerciseSet.Exercise?.name}</p>
           <p
-            className={`flex-1 text-end ml-3 text-red-400 bg-red font-bold ${
+            className={`flex-1 text-end ml-3 text-fuchsia-400 font-bold tracking-wide ${
               width > 700 ? '' : 'pr-[1rem]'
             }`}
           >

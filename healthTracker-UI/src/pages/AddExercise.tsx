@@ -26,15 +26,17 @@ const AddExerciseMain: FC<{
     event.preventDefault();
     saveExercise(form);
   };
-  const inputCls = 'flex-1 min-w-0 p-2 border-1 border-neutral-500 rounded-lg';
+  const inputCls = 'flex-1 w-full bg-neutral-900/50 border border-white/10 text-white placeholder-neutral-500 p-4 rounded-xl focus:outline-none focus:border-violet-500 focus:ring-1 focus:ring-violet-500 transition-all shadow-inner';
   return (
     <div
-      className={`w-[100%] ${
-        width < 1000 ? 'h-[50vh]' : 'h-[80vh]'
-      } flex flex-col items-center`}
+      className={`w-[100%] flex flex-col items-center justify-center p-6 ${
+        width < 1000 ? 'min-h-[50vh]' : 'min-h-[80vh]'
+      }`}
     >
-      <h1 className="text-xl text-center p-2">Add New Exercise</h1>
-      <form className="flex flex-col gap-[1rem] w-[70%] min-h-[10vh]">
+      <div className="w-full max-w-lg backdrop-blur-2xl bg-white/5 border border-white/10 shadow-2xl rounded-3xl p-8 lg:p-12 relative overflow-hidden">
+        <div className="absolute top-0 right-0 w-32 h-32 bg-violet-500/10 rounded-full blur-3xl pointer-events-none"></div>
+        <h1 className="text-3xl font-light text-center mb-8 text-transparent bg-clip-text bg-gradient-to-r from-violet-400 to-fuchsia-300">Add New Exercise</h1>
+        <form className="flex flex-col gap-[1.2rem] w-full relative z-10">
         <input
           type="text"
           name="name"
@@ -67,9 +69,9 @@ const AddExerciseMain: FC<{
           placeholder="Add Difficulty"
           onChange={inputChange}
         />
-        <div className="flex justify-center">
+        <div className="flex justify-center mt-6">
           <button
-            className="text-lg bg-neutral-800 rounded-full font-semibold p-4 w-fit text-neutral-200 ml-1"
+            className="text-lg bg-gradient-to-r from-violet-600 to-fuchsia-600 hover:from-violet-500 hover:to-fuchsia-500 shadow-[0_0_15px_rgba(139,92,246,0.3)] hover:shadow-[0_0_25px_rgba(139,92,246,0.5)] rounded-xl font-semibold px-10 py-3 w-full text-white transition-all transform hover:-translate-y-0.5"
             type="submit"
             onClick={formSubmit}
           >
@@ -77,6 +79,7 @@ const AddExerciseMain: FC<{
           </button>
         </div>
       </form>
+      </div>
     </div>
   );
 };
