@@ -26,7 +26,7 @@ export const BasePopup: FC<BasePopupProps> = ({ children, setOpen }) => {
       }}
     >
       <div
-        className="flex justify-center w-full text-white overflow-y-auto max-h-[85vh]  max-w-[80vw] overflow-y-auto border rounded-xl"
+        className="flex w-full text-white overflow-y-auto max-h-[85vh]  max-w-[80vw] overflow-y-auto border rounded-xl"
         onClick={(e) => {
           e.stopPropagation();
         }}

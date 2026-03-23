@@ -1,6 +1,6 @@
 import { useEffect, type ChangeEvent, type FC } from 'react';
 import wrappedComponent from '../utils/wrappedComponent';
-import { Save, Plus } from 'lucide-react';
+import { Save, Plus, Dumbbell } from 'lucide-react';
 import { AddExercise } from '../components/AddExercise';
 import { shallowEqual, useDispatch, useSelector } from 'react-redux';
 import {
@@ -22,6 +22,7 @@ import { useResizeContext } from '../hooks/useResizeContext';
 
 const AddWorkoutMain = () => {
   const dispatch = useDispatch<loginDispatch>();
+  const [isOpen, setOpen] = useModlaHooks();
   const location = useLocation();
   const workout = location?.state?.workout as Workout | undefined;
   let workoutCopy = JSON.parse(JSON.stringify(workout || '')) as Workout;
@@ -48,7 +49,7 @@ const AddWorkoutMain = () => {
   return (
     <div className="flex flex-col items-center py-[2rem]">
       <div className="flex flex-col w-[65%] p-[2rem] gap-[2rem] home-resize-full backdrop-blur-xl bg-white/5 border border-white/10 shadow-2xl rounded-3xl text-neutral-200">
-        <Header />
+        <Header isOpen={isOpen} setOpen={setOpen} />
         <input
           type="text"
           id="workoutName"
@@ -59,16 +60,30 @@ const AddWorkoutMain = () => {
           placeholder="Enter Workout name ..."
           className="bg-transparent border-b border-white/20 focus:border-violet-500 text-3xl px-2 py-4 outline-none placeholder-neutral-500 transition-colors w-full"
         />
-        {exerciseSets?.map((id) => {
-          return <AddExercise itemId={id} />;
-        })}
+        {exerciseSets && exerciseSets.length > 0 ? (
+          exerciseSets.map((id) => <AddExercise key={id} itemId={id} />)
+        ) : (
+          <div 
+            onClick={() => setOpen(true)}
+            className="flex flex-col items-center justify-center py-16 px-6 mt-4 backdrop-blur-md bg-white/5 border-2 border-dashed border-white/20 rounded-3xl text-neutral-400 gap-4 transition-all duration-300 hover:bg-white/10 hover:border-white/40 cursor-pointer"
+          >
+            <div className="p-5 bg-white/5 rounded-full mb-2 shadow-inner">
+              <Dumbbell size={48} className="text-white/40" />
+            </div>
+            <h2 className="text-2xl font-light text-white tracking-wide">Your workout is empty</h2>
+            <p className="text-center max-w-sm leading-relaxed">Click the <strong className="text-white font-medium">Add Exercise</strong> button above to start building your custom routine.</p>
+          </div>
+        )}
       </div>
     </div>
   );
 };
 
-const Header: FC = () => {
-  const [isOpen, setOpen] = useModlaHooks();
+interface HeaderProps {
+  isOpen: boolean;
+  setOpen: React.Dispatch<React.SetStateAction<boolean>>;
+}
+const Header: FC<HeaderProps> = ({ isOpen, setOpen }) => {
   const { width } = useResizeContext();
   const [saveWorkoutCall, { isLoading }] = useSaveWorkoutMutation();
   const dispatch = useDispatch();

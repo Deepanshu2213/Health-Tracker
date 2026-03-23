@@ -61,7 +61,7 @@ const ExerciseMain: FC<ExerciseMainProps> = ({
       (exerciseData) => !alreadySelected.includes(exerciseData.id)
     );
   }
-  const block = () => {};
+  const block = () => { };
   if (isLoading) {
     return <Loader />;
   }
@@ -78,8 +78,8 @@ const ExerciseMain: FC<ExerciseMainProps> = ({
   const selectedCount = Object.keys(selectedExercise).length;
   data = finalTerm
     ? data?.filter((ele) =>
-        ele.name.toLowerCase().includes(finalTerm.toLowerCase())
-      )
+      ele.name.toLowerCase().includes(finalTerm.toLowerCase())
+    )
     : data;
   const modalChange = () => {
     setOpenModal((prev) => !prev);
@@ -93,18 +93,16 @@ const ExerciseMain: FC<ExerciseMainProps> = ({
             <button
               hidden={useInPopup ? true : false}
               onClick={modalChange}
-              className={`flex ${
-                width < 700 ? 'flex-1 justify-center' : ''
-              } text-lg gap-2 px-6 items-center py-2 bg-gradient-to-r from-violet-600 to-fuchsia-600 hover:from-violet-500 hover:to-fuchsia-500 shadow-[0_0_15px_rgba(139,92,246,0.3)] hover:shadow-[0_0_25px_rgba(139,92,246,0.5)] rounded-xl transition-all font-semibold`}
+              className={`flex ${width < 700 ? 'flex-1 justify-center' : ''
+                } text-lg gap-2 px-6 items-center py-2 bg-gradient-to-r from-violet-600 to-fuchsia-600 hover:from-violet-500 hover:to-fuchsia-500 shadow-[0_0_15px_rgba(139,92,246,0.3)] hover:shadow-[0_0_25px_rgba(139,92,246,0.5)] rounded-xl transition-all font-semibold`}
             >
               Add Exercise
             </button>
           </div>
           {selectedCount > 0 && (
             <button
-              className={`text-xl p-2 my-2 ${
-                width < 700 ? 'w-full' : 'w-auto px-6 ml-4'
-              } rounded-xl bg-green-600/90 hover:bg-green-500/90 shadow-[0_0_15px_rgba(22,163,74,0.3)] hover:shadow-[0_0_25px_rgba(22,163,74,0.5)] text-white transition-all font-semibold`}
+              className={`text-xl p-2 my-2 ${width < 700 ? 'w-full' : 'w-auto px-4 ml-2 shrink-0 whitespace-nowrap'
+                } rounded-xl bg-green-600/90 hover:bg-green-500/90 shadow-[0_0_15px_rgba(22,163,74,0.3)] hover:shadow-[0_0_25px_rgba(22,163,74,0.5)] text-white transition-all font-semibold`}
               onClick={addExercise}
             >
               {`Add Workout(${selectedCount})`}
